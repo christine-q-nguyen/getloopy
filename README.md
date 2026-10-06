@@ -19,15 +19,9 @@ The site lives at **https://christinenguyen.me/**. Pages link to each other with
 python3 tools/set-site-url.py https://christinenguyen.me/
 ```
 
-**GitHub Pages.** `.github/workflows/pages.yml` deploys the site files (not `tools/`, this README, or the workflow) on every push to `main`. One-time setup; free plans need the repository to be public:
+**GitHub Pages.** `.github/workflows/pages.yml` deploys the site files (not `tools/`, this README, or the workflow) on every push to `main`. The custom domain lives in the repository's Pages settings (a `CNAME` file is ignored with a workflow deploy), the domain is verified on the account, and HTTPS is enforced.
 
-```sh
-gh repo edit christine-q-nguyen/getloopy --visibility public --accept-visibility-change-consequences
-gh api -X POST repos/christine-q-nguyen/getloopy/pages -f build_type=workflow
-gh api -X PUT repos/christine-q-nguyen/getloopy/pages -f cname=christinenguyen.me
-```
-
-With a workflow deploy, the custom domain lives in the repository's Pages settings; a `CNAME` file is ignored. At Namecheap (Domain List → Manage → Advanced DNS), delete the parking records, then add:
+DNS at Namecheap (Domain List → Manage → Advanced DNS):
 
 | Type | Host | Value |
 |---|---|---|
@@ -36,8 +30,7 @@ With a workflow deploy, the custom domain lives in the repository's Pages settin
 | A | @ | 185.199.110.153 |
 | A | @ | 185.199.111.153 |
 | CNAME | www | christine-q-nguyen.github.io. |
-
-Once GitHub's DNS check passes (Settings → Pages), tick **Enforce HTTPS**. Also verify the domain for the account (GitHub → Settings → Pages → Add a domain, then add the TXT record it shows) so no other repository can claim it.
+| TXT | _github-pages-challenge-christine-q-nguyen | the code GitHub shows under Settings → Pages → Verified domains |
 
 ## What's in here
 
