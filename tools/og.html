@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Open Graph card</title>
+<link rel="stylesheet" href="../assets/css/styles.css">
+<!-- Screenshot this page at exactly 1200×630 and save it as assets/img/og.png. -->
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: var(--bg); }
+  .card { box-sizing: border-box; width: 1200px; height: 630px; padding: 0 72px; display: grid; grid-template-columns: 1fr 400px; gap: 32px; align-items: center; }
+  .card .lockup { font-size: 92px; margin: 0; }
+  .card .role { font-family: var(--sans); font-size: 29px; line-height: 1.32; letter-spacing: -.02em; margin: 34px 0 0; color: var(--ink); }
+  .card .role em { font-family: var(--serif); font-size: 1.1em; letter-spacing: -.01em; }
+  .card .loc { margin: 38px 0 0; font-size: 20px; color: var(--ink-2); letter-spacing: -.01em; }
+  .card .loc b { color: var(--ink); font-weight: 500; }
+  .card img { display: block; width: 400px; height: 400px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div>
+    <h1 class="lockup"><span class="first">christine</span><span class="dot">.</span><span class="last">nguyen</span></h1>
+    <p class="role">Enterprise AI enablement, transformation, and adoption lead. I get fuzzy AI asks down to <em class="ac">the real problem,</em> then into working systems teams are excited to own.</p>
+    <p class="loc"><b>christinenguyen.me</b> &middot; Austin, Texas</p>
+  </div>
+  <img src="../assets/img/portrait.webp" alt="" width="400" height="400">
+</div>
+</body>
+</html>

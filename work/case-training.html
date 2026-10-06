@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js sketch">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A safe way to train your own model — Christine Nguyen</title>
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+<link rel="stylesheet" href="../assets/css/styles.css?v=20261006d">
+<meta name="description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<!-- seo:start (managed by tools/set-site-url.py) -->
+<link rel="canonical" href="https://christinenguyen.me/work/case-training.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="christine.nguyen">
+<meta property="og:title" content="A safe way to train your own model — Christine Nguyen">
+<meta property="og:description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<meta property="og:url" content="https://christinenguyen.me/work/case-training.html">
+<meta property="og:image" content="https://christinenguyen.me/assets/img/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A safe way to train your own model — Christine Nguyen">
+<meta name="twitter:description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<meta name="twitter:image" content="https://christinenguyen.me/assets/img/og.png">
+<script type="application/ld+json">{
+"@context": "https://schema.org",
+"@graph": [
+{
+"@type": "Person",
+"name": "Christine Nguyen",
+"givenName": "Christine",
+"familyName": "Nguyen",
+"jobTitle": "AI Enablement, Transformation, and Adoption Lead",
+"description": "Enterprise AI enablement, transformation, and adoption lead who translates between the people doing the work, leaders making the decision, and engineers building the system. Turns fuzzy AI asks into clear choices, testable workflows, trusted model decisions, and capabilities teams can own.",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Austin",
+"addressRegion": "TX",
+"addressCountry": "US"
+},
+"email": "mailto:christineqnguyen@gmail.com",
+"sameAs": [
+"https://www.linkedin.com/in/christinenguyen7/",
+"https://github.com/christine-q-nguyen"
+],
+"knowsAbout": [
+"AI enablement",
+"AI transformation",
+"AI adoption",
+"AI Center of Excellence",
+"AI portfolio prioritization",
+"agentic workflows",
+"applied machine learning",
+"AI platform strategy",
+"human-in-the-loop design",
+"responsible AI",
+"LLM evaluation",
+"Model Context Protocol (MCP)",
+"use-case prioritization",
+"service design",
+"user research",
+"product management"
+],
+"alumniOf": [
+{
+"@type": "CollegeOrUniversity",
+"name": "New York University, Interactive Telecommunications Program"
+},
+{
+"@type": "CollegeOrUniversity",
+"name": "The University of Texas at Dallas"
+}
+],
+"@id": "https://christinenguyen.me/#person",
+"url": "https://christinenguyen.me/"
+},
+{
+"@type": "WebPage",
+"@id": "https://christinenguyen.me/work/case-training.html",
+"url": "https://christinenguyen.me/work/case-training.html",
+"name": "A safe way to train your own model — Christine Nguyen",
+"description": "A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.",
+"isPartOf": {
+"@type": "WebSite",
+"@id": "https://christinenguyen.me/#site",
+"url": "https://christinenguyen.me/",
+"name": "christine.nguyen — Let's get loopy"
+},
+"about": {
+"@id": "https://christinenguyen.me/#person"
+}
+}
+]
+}</script>
+<!-- seo:end -->
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grid-lines" aria-hidden="true"><i></i><i></i></div>
+
+<nav class="nav" aria-label="Primary">
+  <div class="in">
+    <a class="brand" href="../index.html"><span class="ac">christine</span><span class="dot">.</span>nguyen<span class="brand-loop lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span></a>
+    <ul>
+      <li><a href="../index.html#work" aria-current="true"><span class="def">Work</span><span class="alt" aria-hidden="true">Work</span></a></li>
+      <li><a href="../index.html#open-source"><span class="def">Open Source</span><span class="alt" aria-hidden="true">Open Source</span></a></li>
+      <li><a href="../index.html#approach"><span class="def">Approach</span><span class="alt" aria-hidden="true">Approach</span></a></li>
+      <li hidden><a href="../writing.html"><span class="def">Writing</span><span class="alt" aria-hidden="true">Writing</span></a></li>
+      <li hidden><a href="../research.html"><span class="def">Research</span><span class="alt" aria-hidden="true">Research</span></a></li>
+      <li><a href="../about.html"><span class="def">About</span><span class="alt" aria-hidden="true">About</span></a></li>
+    </ul>
+    <a class="pill" href="../index.html#contact"><span class="open-sign" aria-hidden="true"><span>OPEN</span></span><span class="txt">to work</span></a>
+  </div>
+</nav>
+<header class="wrap case-head">
+  <span class="n">06 · Training as a service</span>
+  <h1>When prompting stops working, teams need a safe path to <em class="ac">train their own model.</em></h1>
+  <p class="lede">Once prompting hit its limit, the question became how to make training our own model a safe, normal thing to do instead of a one-off exception. I wrote the rules for it and designed routing that saves the expensive LLM, and people's time, for the rows that need them.</p>
+  <p class="out"><b>70–85%</b><span>fewer LLM calls on classification, by design</span></p>
+  <div class="meta"><div><b>My role</b>Product lead; wrote the rules for training a model</div><div><b>When</b>2026</div><div><b>Domain</b>classification first; reused in a research institute's topic mapping</div><div><b>Status</b>In place, with a written risk sign-off</div></div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="body rv"><aside>The problem</aside><div>
+    <p>Prompting has a ceiling. On the classification work it showed up at level two of the taxonomy: the frontier model stopped improving no matter how the prompt was written. The usual answer, keep prompting, burns tokens and still can't give a user a score they can audit. The other answer, training your own model, had no safe path at the firm: no approved place to train one, no agreed risk sign-off, and no rule for whose data could train what.</p>
+    <p>Tokens add up, too. Every LLM call costs money, and as AI use spreads across the firm, so does the bill. This work is part of a bigger firm push to spend tokens only where they actually help.</p>
+  </div></div>
+
+  <div class="body rv"><aside>My role</aside><div>
+    <p>I was the product lead. I wrote the rules for training a model here: which teams can do it, with whose data, on which approved infrastructure, and who signs off on the risk before anything runs. I designed the routing: our trained model takes the rows it's sure about, the LLM gets the ones it isn't, and a person sees anything still below the bar. I worked through the data-rights questions with legal and kept each client's data separate. The engineers built and trained the models.</p>
+  </div></div>
+
+  <div class="body rv"><aside>The decision</aside><div>
+    <p><strong>Make the safe way the easy way.</strong> Teams kept asking for one-off exceptions to train a model. Instead, I set up one path anyone could follow: approved infrastructure, a risk sign-off written once, each client's data kept separate, and an honest "not sure" instead of a made-up answer when the model isn't confident.</p>
+    <p>It's a cost decision too. Every row our own model handles is a row we don't pay an LLM for.</p>
+  </div></div>
+
+  <div class="body rv" id="system"><aside>The system</aside><div>
+    <ol class="flow" data-anim style="--at:90%">
+      <li><b>rows to classify</b>client data, isolated per client</li>
+      <li><b>our trained model</b>handles most rows on its own</li>
+      <li><b>confidence check</b>a threshold per workflow</li>
+      <li><b>LLM</b>called only when confidence is low</li>
+      <li class="person"><b>below the threshold</b>"no signal" beats a guess</li>
+    </ol>
+    <p class="small">Our model goes first; the expensive, less predictable LLM runs only where it's needed.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 720 232" role="img" aria-labelledby="dg-zones">
+        <title id="dg-zones">An illustrative chart of how sure our trained model is about each row, from less sure to more sure. Rows it's very sure about, about three quarters, stay with our model. Rows in the middle go to the LLM. The least certain rows go to a person.</title>
+        <rect class="dg-gate-soft" x="40" y="54" width="325" height="126"/>
+        <rect class="dg-box soft" x="365" y="54" width="162.5" height="126" style="opacity:.7"/>
+        <g class="dg-dot" style="opacity:.62"><rect x="43.25" y="177" width="26" height="3"/><rect x="75.75" y="177" width="26" height="3"/><rect x="108.25" y="176" width="26" height="4"/><rect x="140.75" y="176" width="26" height="4"/><rect x="173.25" y="175" width="26" height="5"/><rect x="205.75" y="175" width="26" height="5"/><rect x="238.25" y="174" width="26" height="6"/><rect x="270.75" y="174" width="26" height="6"/><rect x="303.25" y="173" width="26" height="7"/><rect x="335.75" y="172" width="26" height="8"/><rect x="368.25" y="171" width="26" height="9"/><rect x="400.75" y="170" width="26" height="10"/><rect x="433.25" y="168" width="26" height="12"/><rect x="465.75" y="166" width="26" height="14"/><rect x="498.25" y="164" width="26" height="16"/><rect x="530.75" y="140" width="26" height="40"/><rect x="563.25" y="118" width="26" height="62"/><rect x="595.75" y="94" width="26" height="86"/><rect x="628.25" y="76" width="26" height="104"/><rect x="660.75" y="62" width="26" height="118"/></g>
+        <path class="dg-line" d="M40 180H690"/>
+        <path class="dg-dash" d="M365 46V180M527.5 46V180"/>
+        <g transform="translate(176 32)"><circle r="10" class="dg-line"/><circle cy="-3" r="2.3" fill="var(--accent)"/><path d="M-4.6 5.6c0-3.3 2.1-5.1 4.6-5.1s4.6 1.8 4.6 5.1" fill="none" stroke="var(--accent)" stroke-width="1.3"/></g>
+        <g class="dg-t hand"><text x="192" y="37">a person decides</text><text x="446" y="37" text-anchor="middle">the LLM takes a look</text><text x="609" y="37" text-anchor="middle">our model handles it</text></g>
+        <g class="dg-t muted"><text x="40" y="198">less sure</text><text x="690" y="198" text-anchor="end">more sure</text><text x="365" y="198" text-anchor="middle">how sure our trained model is about each row</text></g>
+        <text class="dg-t hand muted" x="40" y="222">illustrative: by design, about three quarters of rows never need the LLM</text>
+      </svg>
+      <figcaption>Every row gets a confidence score. The sure ones stay with our own model, the middle goes to the LLM, and the least certain go to a person.</figcaption>
+    </figure>
+    <div class="chips"><b>Built with</b><span>Custom-trained model</span><span>Confidence gating</span><span>Our model first, LLM second</span><span>Approved infrastructure</span><span>Documented risk sign-off</span><span>Per-client isolation</span></div>
+  </div></div>
+
+  <div class="body rv"><aside>The result</aside><div>
+    <div class="stats">
+      <div class="stat"><div class="v">70–85%</div><div class="l">fewer LLM calls on classification, because our model goes first<span class="how">a design estimate from the share of rows our model can handle; the dollar saving is small at today's volumes, but predictable costs matter</span></div></div><div class="stat"><div class="v">2</div><div class="l">jobs using the same trained model: benchmarking and the institute's topic mapping</div></div><div class="stat"><div class="v">1</div><div class="l">safe, approved way to train a model, where there had been none</div></div>
+    </div>
+  </div></div>
+
+  <div class="body rv"><aside>How I knew it worked</aside><div>
+    <p><strong>It got signed off.</strong> The path has a written risk sign-off and keeps each client's data separate.</p>
+    <blockquote>Honestly, the cost savings were a bonus. What mattered was getting the same answer every time, with a score anyone can check.<cite>How I describe it</cite></blockquote>
+  </div></div>
+
+  <div class="body rv"><aside>Who owns it now</aside><div>
+    <p><strong>The firm has a path where there was none.</strong> Teams that hit the prompting ceiling can train their own model without turning it into a procurement project, and two teams already use the same model.</p>
+  </div></div>
+
+  <div class="body rv"><aside>What I learned</aside><div>
+    <ul>
+      <li><strong>Count tokens before someone makes you.</strong> Deciding where each row goes is about trust first, and it saves money too.</li>
+      <li><strong>Reuse is the proof.</strong> A model a second team picks up is worth more than a benchmark.</li>
+    </ul>
+  </div></div>
+
+  <div class="next"><a href="../index.html#work">All work</a><a href="case-meta.html">Next: How I built this portfolio</a></div>
+</main>
+<footer class="band"><span class="ac">christine</span><span class="dot">.</span>nguyen <span class="lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span> (Austin · a work in progress, 2008 – present)</footer>
+<script src="../assets/js/site.js?v=20261006d" defer></script>
+</body>
+</html>

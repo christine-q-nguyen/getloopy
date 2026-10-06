@@ -1,0 +1,15 @@
+# system
+.DS_Store
+Thumbs.db
+
+# private working docs and references: these stay on the machine, never in the repo
+_reference/
+DESIGN_SYSTEM.md
+CONTENT_MAP.md
+REVIEW_BEFORE_PUBLISHING.md
+VOICE_GUIDE.md
+SITE_CONTENT.txt
+
+# local scratch
+*.log
+__pycache__/

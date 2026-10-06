@@ -1,0 +1,636 @@
+/* christine.nguyen — portfolio v2
+   System: a crumpled-paper page, hairline three-column grid, oversized display type with italic-serif accents,
+   bracket labels, hand-sketched diagrams. One accent colour, orange, for the loop's moving dot and the human gate.
+   One motion idea: an orange dot travels a line and leaves a trace that fades back to hairline.
+   Type: Bricolage Grotesque (display) · Inter (UI/body) · Instrument Serif italic (accents, watermarks) · Gochi Hand (diagram annotations only).
+   Spec: ../../DESIGN_SYSTEM.md */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Gochi+Hand&display=swap');
+
+/* ---------- tokens ---------- */
+:root{
+  --bg:#f1f1f1; --bg-2:#e7e9ec; --bg-3:#dfe2e6;
+  --ink:#181818; --ink-2:#5c5c5c; --ink-3:#767676;
+  --line:rgba(0,0,0,.10); --line-2:rgba(0,0,0,.18); --stroke:rgba(24,24,24,.30); --trace:rgba(24,24,24,.5);
+  --accent:#d4501e; --accent-soft:rgba(212,80,30,.12);
+  --inverse:#111111; --btn:#2f2f2f;
+  --w:1120px; --gutter:clamp(1rem,3vw,1.5rem); --measure:60ch;
+  --display:"Bricolage Grotesque","Inter",system-ui,sans-serif;
+  --sans:"Inter",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --hand:"Gochi Hand","Bradley Hand","Comic Sans MS",cursive;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --nav-h:64px;
+}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.55;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+
+/* ---------- paper: a crumpled sheet multiplied over the whole page (creases + grain), drawn by SVG filters, no image file. Part of the sketch layer: off with ?sketch=0 ---------- */
+.sketch body::before{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;mix-blend-mode:multiply;opacity:.36;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1100'><filter id='c' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.0105' numOctaves='5' seed='9' stitchTiles='stitch'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='3.6'><feDistantLight azimuth='235' elevation='68'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='1.08'/><feFuncG type='linear' slope='1.08'/><feFuncB type='linear' slope='1.08'/></feComponentTransfer></filter><rect width='1100' height='1100' filter='url(%23c)'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .55  0 0 0 0 .55  0 0 0 .22 0'/></filter><rect width='240' height='240' filter='url(%23g)'/></svg>");
+  background-size:1100px 1100px,240px 240px}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.72;transition:opacity .2s ease}
+::selection{background:var(--ink);color:var(--bg)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:var(--bg);padding:.5rem .8rem;z-index:100}
+.skip:focus{left:1rem;top:1rem}
+
+/* ---------- the grid: three hairline columns behind everything ---------- */
+.grid-lines{position:fixed;inset:0;pointer-events:none;z-index:0;max-width:var(--w);margin:0 auto;padding:0 var(--gutter)}
+.grid-lines::before,.grid-lines::after,.grid-lines i{content:"";position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.grid-lines::before{left:var(--gutter)}
+.grid-lines::after{right:var(--gutter)}
+.grid-lines i:nth-child(1){left:calc(var(--gutter) + (100% - 2*var(--gutter))/3)}
+.grid-lines i:nth-child(2){left:calc(var(--gutter) + 2*(100% - 2*var(--gutter))/3)}
+@media (max-width:640px){.grid-lines i:nth-child(1){left:50%}.grid-lines i:nth-child(2){display:none}}
+/* runners: orange dots that travel the grid lines at their own speed and direction, each with a fading trace (injected by site.js) */
+.grid-lines .run{position:absolute;top:0;width:1px;height:120px;margin-left:0;transform:translateY(-130%);background:linear-gradient(to bottom,transparent,var(--trace));animation:run var(--dur,30s) linear var(--delay,0s) infinite;will-change:transform}
+.grid-lines .run::after{content:"";position:absolute;left:50%;bottom:-2px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--accent)}
+.grid-lines .run{transition:opacity .5s ease}
+.grid-lines .run.fade{opacity:.18}
+.grid-lines .run.up{background:linear-gradient(to top,transparent,var(--trace));animation-direction:reverse}
+.grid-lines .run.up::after{bottom:auto;top:-2px}
+.grid-lines .run[data-line="0"]{left:var(--gutter)}
+.grid-lines .run[data-line="1"]{left:calc(var(--gutter) + (100% - 2*var(--gutter))/3)}
+.grid-lines .run[data-line="2"]{left:calc(var(--gutter) + 2*(100% - 2*var(--gutter))/3)}
+.grid-lines .run[data-line="3"]{left:calc(100% - var(--gutter))}
+@media (max-width:640px){.grid-lines .run[data-line="1"]{left:50%}.grid-lines .run[data-line="2"]{display:none}}
+@keyframes run{from{transform:translateY(-130%)}to{transform:translateY(100vh)}}
+.wrap{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:0 var(--gutter)}
+.rule{height:1px;background:var(--line);border:0}
+.rule.full{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw}
+
+/* ---------- labels: (brackets) and +tags ---------- */
+.lbl{font-family:var(--sans);font-size:14px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.lbl::before{content:"("}.lbl::after{content:")"}
+.lbl.muted{color:var(--ink-2)}
+.tag{font-family:var(--sans);font-size:14px;letter-spacing:-.03em;color:var(--ink)}
+.tag::before{content:"+"}
+.tags{display:flex;gap:1.6rem;flex-wrap:wrap}
+em.ac,.ac{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em;font-size:1.08em;line-height:1}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:20;background:rgba(241,241,241,.86);backdrop-filter:saturate(1.1) blur(10px);-webkit-backdrop-filter:saturate(1.1) blur(10px);border-bottom:1px solid var(--line)}
+.nav .in{max-width:none;height:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 clamp(1rem,2.2vw,2rem)}
+.brand{font-family:var(--display);font-size:17.5px;letter-spacing:-.04em;font-weight:500;justify-self:start;display:inline-flex;align-items:center}
+.brand .ac{font-size:1.03em}
+.brand .dot,.band .dot{color:var(--accent);font-weight:700}
+.brand-loop{margin-left:.48rem;width:1.35em;height:1.35em;animation:spin 18s linear infinite}
+.brand-loop svg{width:100%;height:100%;overflow:visible}
+/* the loop glyph as a small mark: status pill, footer band */
+.lg{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.22em}
+.lg svg{width:100%;height:100%;overflow:visible}
+.nav ul{list-style:none;display:flex;gap:clamp(1rem,3vw,2.6rem);justify-self:center}
+.nav li a{display:inline-grid;position:relative;font-size:14px;letter-spacing:-.02em;line-height:1.2;overflow:hidden}
+.nav li a>span{grid-area:1/1;transition:transform .32s var(--ease),opacity .32s var(--ease)}
+.nav li a>span.alt{font-family:var(--serif);font-style:italic;font-size:1.12em;transform:translateY(110%);opacity:0}
+.nav li a:hover{opacity:1}
+.nav li a:hover>span.def,.nav li a[aria-current]>span.def{transform:translateY(-110%);opacity:0}
+.nav li a:hover>span.alt,.nav li a[aria-current]>span.alt{transform:none;opacity:1}
+.nav li a[aria-current]::after{content:"";position:absolute;left:.55em;right:.55em;bottom:-2px;height:1px;background:var(--ink)}
+.pill{justify-self:end;display:inline-flex;align-items:center;gap:.5rem;font-size:14px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.pill .txt{align-self:flex-start;margin-top:.57rem}
+/* a tiny shop sign: it flickers to life, then holds a warm orange neon glow. */
+.open-sign{position:relative;flex:none;width:2.5rem;height:1.65rem;transform-origin:50% 0}
+.open-sign::before,.open-sign::after{content:"";position:absolute;top:.05rem;width:1px;height:.52rem;background:var(--ink-2);transform-origin:top}
+.open-sign::before{left:.62rem;transform:rotate(12deg)}
+.open-sign::after{right:.62rem;transform:rotate(-12deg)}
+.open-sign span{position:absolute;left:.12rem;right:.12rem;top:.48rem;height:1.05rem;display:grid;place-items:center;border:1px solid var(--accent);background:rgba(241,241,241,.92);font-family:var(--display);font-size:8px;font-weight:700;line-height:1;letter-spacing:.12em;color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.4),0 0 8px rgba(212,80,30,.2),inset 0 -1px rgba(212,80,30,.18);animation:open-neon 7.4s steps(1,end) infinite}
+@keyframes open-neon{
+  0%,3%,8%,12%{color:var(--ink-2);border-color:var(--line-2);box-shadow:inset 0 -1px rgba(0,0,0,.08)}
+  5%,10%{color:var(--accent);border-color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.35),0 0 8px rgba(212,80,30,.18),inset 0 -1px rgba(212,80,30,.18)}
+  14%,100%{color:var(--accent);border-color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.5),0 0 10px rgba(212,80,30,.26),0 0 18px rgba(212,80,30,.12),inset 0 -1px rgba(212,80,30,.18)}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:760px){
+  .nav .in{grid-template-columns:1fr auto;grid-template-rows:auto auto;height:auto;padding:.6rem 1rem}
+  .nav{height:auto}
+  .nav ul{grid-column:1/-1;gap:1.1rem;justify-self:start;padding-bottom:.55rem}
+  .pill{grid-row:1;grid-column:2}
+  :root{--nav-h:92px}
+}
+
+/* ---------- hero: fills the first screen. lockup → tags → (intro · glyph · where), staggered, all above the fold ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;padding-top:calc(var(--nav-h) + clamp(1.25rem,3.5vh,3rem));padding-bottom:clamp(1rem,3vh,2rem)}
+.lockup{font-family:var(--display);font-weight:400;font-size:clamp(3.2rem,10.6vw,10.9rem);line-height:.9;letter-spacing:-.065em;display:flex;flex-wrap:wrap;align-items:baseline;font-variation-settings:"opsz" 96;color:var(--ink)}
+@media (max-width:760px){.lockup{font-size:clamp(3.2rem,15vw,7rem)}}
+.lockup .first{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.05em;font-size:1.02em}
+.lockup .dot{font-weight:700;letter-spacing:0;margin:0 .035em 0 .015em;color:var(--accent)}
+.lockup .last{letter-spacing:-.075em}
+.hero .tags{margin-top:clamp(1rem,2.5vh,2rem);display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.hero .below{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:clamp(1rem,3vh,2.5rem);align-items:center;min-height:0}
+.hero .intro{font-size:15.5px;line-height:1.45;letter-spacing:-.015em;max-width:30ch;align-self:start;margin-top:clamp(0px,2vh,1.25rem)}
+/* the 7-second read: role line + three results */
+.hero .intro .role{font-size:clamp(1rem,1.25vw,1.18rem);line-height:1.38;letter-spacing:-.022em;color:var(--ink);max-width:28ch}
+/* The four "Make it…" lines share one label column (subgrid), so the descriptions line up instead of zigzagging. */
+.proof{list-style:none;margin-top:1.1rem;display:grid;grid-template-columns:max-content 1fr;column-gap:.8rem;row-gap:0;max-width:32ch}
+.proof li{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:baseline;font-size:13.5px;line-height:1.3;color:var(--ink-2);border-top:1px solid var(--line);padding:.5rem 0 .4rem}
+@supports not (grid-template-columns:subgrid){.proof li{grid-template-columns:7.2rem 1fr;column-gap:.8rem}}
+.proof li:last-child{border-bottom:1px solid var(--line)}
+.proof b{font-family:var(--display);font-weight:600;font-size:1.2rem;letter-spacing:-.045em;color:var(--ink);white-space:nowrap;font-variation-settings:"opsz" 48}
+.proof b i{font-style:normal;color:var(--accent);font-weight:400;margin:0 .1em}
+/* The where-line sits two lines higher than the bottom of the column, so it no longer floats under a large gap. */
+.hero .where{font-size:15.5px;line-height:1.45;letter-spacing:-.015em;text-align:right;max-width:28ch;justify-self:end;align-self:end;margin-bottom:clamp(3rem,12vh,7.5rem)}
+.hero .glyph{justify-self:center;align-self:center;width:min(440px,56vh)}
+.hero .glyph svg{width:100%;height:auto;overflow:visible}
+@media (max-width:760px){
+  .hero{min-height:0;padding-top:calc(var(--nav-h) + 2rem)}
+  .hero .tags,.hero .below{grid-template-columns:1fr}
+  .hero .where{text-align:left;justify-self:start;margin-bottom:0}
+  .hero .glyph{justify-self:start;width:min(100%,300px);order:3;margin:1rem 0}
+}
+
+/* ---------- sections ---------- */
+.sec{position:relative;padding-top:clamp(4rem,9vw,7.5rem);padding-bottom:clamp(4rem,9vw,7.5rem)}
+.sec+.sec{border-top:1px solid var(--line)}
+/* The nav jumps to sections on Home; land them just below the fixed bar. */
+.sec[id]{scroll-margin-top:calc(var(--nav-h) - 2rem)}
+@media (max-width:760px){.sec[id]{scroll-margin-top:calc(var(--nav-h) + 1rem)}}
+.sec-head{position:relative;text-align:center;padding:clamp(1rem,4vw,3rem) 0 clamp(2rem,5vw,3.5rem)}
+.sec-head.left{text-align:left}
+.sec-head .kick{font-size:14px;letter-spacing:-.02em;font-weight:500;color:var(--ink);display:block;margin-bottom:.4rem}
+.sec-head h2{position:relative;font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3vw,2rem);letter-spacing:-.06em;line-height:1.15;display:inline-block;z-index:1;font-variation-settings:"opsz" 48}
+.wm{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(4.6rem,15vw,11.5rem);line-height:1;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px var(--stroke);white-space:nowrap;pointer-events:none;user-select:none;z-index:0;overflow:visible}
+.sec-head.left .wm{left:0;transform:translate(-2%,-52%)}
+@supports not (-webkit-text-stroke:1px black){.wm{color:rgba(24,24,24,.06)}}
+.lede{font-size:clamp(1.1rem,1.6vw,1.3rem);line-height:1.42;letter-spacing:-.022em;color:var(--ink);max-width:34em}
+.lede+.lede{margin-top:1rem}
+p{max-width:var(--measure);color:var(--ink-2)}
+p+p{margin-top:1rem}
+p strong,li strong{color:var(--ink);font-weight:500}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,3vw,2rem)}
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1rem,3vw,2rem)}
+.span-2{grid-column:span 2}
+@media (max-width:900px){.cols{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.cols,.cols-2{grid-template-columns:1fr}.span-2{grid-column:span 1}}
+.small{font-size:14px;letter-spacing:-.01em;color:var(--ink-2)}
+h3{font-family:var(--sans);font-weight:500;font-size:16px;letter-spacing:-.02em;line-height:1.35;color:var(--ink)}
+ul.plain{list-style:none}
+ul.plain li{padding:.55rem 0;border-top:1px solid var(--line);color:var(--ink-2)}
+ul.plain li:last-child{border-bottom:1px solid var(--line)}
+.ul{padding-left:1.1rem;color:var(--ink-2);max-width:var(--measure)}
+.ul li{margin:.4rem 0}
+.link{border-bottom:1px solid var(--ink);padding-bottom:1px}
+.link:hover{border-bottom-color:transparent}
+
+/* ---------- capability tiles ---------- */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.cap{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:1.25rem 1.1rem 1.4rem;min-height:190px;display:flex;flex-direction:column;gap:.6rem;background:transparent;transition:background .25s ease}
+a.cap:hover{background:rgba(255,255,255,.55)}
+.cap .n{font-size:13px;letter-spacing:-.02em;color:var(--ink-2)}
+.cap .n::before{content:"("}.cap .n::after{content:")"}
+.cap h3{font-size:16px;margin-top:.9rem}
+.cap p{font-size:14px;line-height:1.45}
+.cap p b{font-weight:500;color:var(--ink)}
+.caps-intro,.sec-intro{max-width:60ch;margin:0 auto 1.4rem;text-align:center;font-size:15.5px;color:var(--ink)}
+.sec-intro{margin-bottom:clamp(1.6rem,3vw,2.4rem);text-wrap:balance}
+/* a capability is a link to the case that proves it */
+a.cap:hover{opacity:1}
+.cap .go{margin-top:auto;padding-top:.5rem;font-size:13px;letter-spacing:-.01em;color:var(--ink)}
+.cap .go::before{content:"("}.cap .go::after{content:")"}
+a.cap:hover .go{font-family:var(--serif);font-style:italic;font-size:14.5px}
+.caps.four{grid-template-columns:repeat(4,1fr)}
+.caps.four .cap{min-height:0}
+@media (max-width:900px){.caps,.caps.four{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:480px){.caps,.caps.four{grid-template-columns:1fr}.cap{min-height:0}}
+
+/* ---------- work tiles ---------- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3vw,2.5rem) clamp(1rem,3vw,2rem)}
+.tile{display:block;position:relative}
+.tile .art{position:relative;aspect-ratio:16/9;background:var(--bg-2);border:1px solid var(--line);overflow:hidden;transition:transform .35s var(--ease),background .35s ease}
+.tile:hover{opacity:1}
+.tile:hover .art{transform:translateY(-3px);background:var(--bg-3)}
+/* "Coming soon" tiles are not links, so they don't lift on hover. */
+.tile .art > svg{position:absolute;inset:0;width:100%;height:100%}
+.tile .art svg[data-trace]{overflow:visible}
+.tile .art .n{position:absolute;left:.8rem;top:.65rem;font-size:13px;letter-spacing:-.02em;color:var(--ink-2)}
+.tile .art .n::before{content:"("}.tile .art .n::after{content:")"}
+.tile h3{margin-top:.9rem;font-size:16px}
+.tile .sub{font-size:14px;color:var(--ink-2);margin-top:.15rem;letter-spacing:-.015em}
+.tile .meta{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.55rem}
+.tile .meta span{font-size:12px;letter-spacing:0;color:var(--ink-2);border:1px solid var(--line-2);padding:.12rem .45rem}
+@media (max-width:640px){.tiles{grid-template-columns:1fr}}
+
+/* ---------- outcome first: on every overview card the result is the largest type; the stack lives on the case page ---------- */
+.tile h3.area,.row h3.area{font-family:var(--sans);font-size:13px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;line-height:1.3;color:var(--ink-2);margin-top:.95rem}
+.row h3.area{margin-top:.15rem}
+.out{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .75rem;margin-top:.3rem;max-width:none}
+.out b{font-family:var(--display);font-weight:600;font-size:clamp(2rem,3.6vw,2.8rem);letter-spacing:-.055em;line-height:1.02;color:var(--ink);white-space:nowrap;font-variation-settings:"opsz" 96}
+.out b i{font-style:normal;font-weight:400;color:var(--accent);margin:0 .07em}
+.out>span{font-size:14px;line-height:1.35;letter-spacing:-.01em;color:var(--ink-2)}
+.row p.out{margin-top:.2rem}
+.out.sm{margin-top:.35rem}
+.out.sm b{font-size:clamp(1.05rem,1.5vw,1.2rem);letter-spacing:-.04em}
+.case-head .out{margin-top:1.5rem}
+.case-head .out b{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+/* On Home and Work, the result reads as one quiet headline—not a separate visual component. */
+/* The headline is a plain sentence a recruiter can read without context; the second line explains it in a lighter weight. */
+#work .out,#selected .out,#open-source .out{display:block;font-family:var(--sans);font-size:clamp(1.15rem,2vw,1.45rem);font-weight:600;line-height:1.18;letter-spacing:-.03em;max-width:34ch}
+#work .out b,#selected .out b,#open-source .out b{display:block;font:inherit;letter-spacing:inherit;line-height:inherit;color:var(--ink);white-space:normal}
+#work .out>span,#selected .out>span,#open-source .out>span{display:block;font:inherit;font-weight:400;font-size:.8em;line-height:1.3;letter-spacing:-.015em;color:var(--ink-2);margin-top:.3em;max-width:44ch}
+#work .out.sm,#selected .out.sm,#open-source .out.sm{font-size:clamp(.98rem,1.35vw,1.12rem);line-height:1.22;letter-spacing:-.025em}
+#work .out.sm>span,#selected .out.sm>span,#open-source .out.sm>span{font-size:.9em}
+/* A result line is one sentence. Flex was treating the number and its meaning as
+   separate blocks, which created an artificial second line and a large gap. */
+.row .out{display:block}
+.row .out b{display:inline;margin-right:.42em}
+.row .out>span{display:inline;max-width:none}
+.tile .sub{margin-top:.55rem}
+.facts{display:grid;gap:.2rem;margin-top:.75rem;font-size:13.5px;line-height:1.4}
+.facts div{display:grid;grid-template-columns:4.8rem 1fr;gap:.6rem}
+.facts dt{color:var(--ink);font-weight:500}
+.facts dd{color:var(--ink-2)}
+.tile .chips,.row .chips{margin-top:.75rem}
+.sub-head{font-family:var(--sans);font-size:14px;font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:.4rem 0 .9rem}
+/* the executive scan on Work: area, what changed, the case */
+.proof-table td strong{color:var(--ink);font-weight:600}
+.proof-table td:first-child{width:13rem}
+.proof-table td:last-child{width:3.5rem;text-align:right;padding-right:0}
+.proof-table .n{font-size:13px;color:var(--ink-2)}
+.proof-table .n::before{content:"("}.proof-table .n::after{content:")"}
+@media (max-width:640px){.proof-table td:first-child{width:auto}.proof-table td:last-child{display:none}}
+
+/* ---------- POV rows ---------- */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:3rem 1fr auto;gap:1.2rem;align-items:baseline;padding:1.25rem 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.row .n{font-size:13px;color:var(--ink-2)}
+.row .n::before{content:"("}.row .n::after{content:")"}
+.row h3{font-family:var(--display);font-weight:500;font-size:clamp(1.15rem,1.8vw,1.4rem);letter-spacing:-.04em;line-height:1.2}
+.row p{font-size:14.5px;margin-top:.3rem;max-width:64ch}
+.row .go{font-size:14px;white-space:nowrap}
+.row .go::before{content:"("}.row .go::after{content:")"}
+.row:hover{opacity:1}
+.row:hover .go{font-family:var(--serif);font-style:italic;font-size:15.5px}
+@media (max-width:640px){.row{grid-template-columns:2.4rem 1fr}.row .go{grid-column:2}}
+
+/* ---------- evidence marks & chips (carried from v1) ---------- */
+.mark{display:inline-block;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:.1rem .4rem;border:1px solid var(--line-2);vertical-align:middle;margin-left:.3rem;color:var(--ink-2);background:rgba(255,255,255,.5)}
+.mark.doc{border-color:var(--ink);color:var(--ink)}
+.mark.est{border-style:dashed}
+.legend{font-size:14px;color:var(--ink-2);border-left:1px solid var(--line-2);padding:.4rem .9rem;margin:1.4rem 0;max-width:var(--measure)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-top:1rem}
+.chips b{font-size:12px;letter-spacing:.02em;text-transform:uppercase;color:var(--ink);font-weight:500;margin-right:.25rem}
+.chips span{font-size:12.5px;color:var(--ink-2);border:1px solid var(--line-2);padding:.15rem .5rem;white-space:nowrap}
+
+/* ---------- crosshair marks on a block ---------- */
+.marks{position:relative}
+.marks::before,.marks::after,.marks>.x::before,.marks>.x::after{content:"+";position:absolute;font-family:var(--sans);font-weight:300;font-size:14px;line-height:1;color:var(--ink-3);pointer-events:none}
+.marks::before{left:-.5rem;top:-.55rem}
+.marks::after{right:-.5rem;bottom:-.55rem}
+.marks>.x::before{right:-.5rem;top:-.55rem}
+.marks>.x::after{left:-.5rem;bottom:-.55rem}
+.marks>.x{position:static}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;border-top:1px solid var(--line);border-left:1px solid var(--line);margin:1.5rem 0}
+.stat{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:1rem 1rem 1.1rem}
+.stat .v{font-family:var(--display);font-weight:500;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.05em;line-height:1}
+.stat .v span{color:var(--accent)}
+.stat .l{font-size:14px;color:var(--ink-2);margin-top:.35rem}
+.stat .how{display:block;font-size:12px;line-height:1.45;color:var(--ink-2);margin-top:.5rem;padding-top:.4rem;border-top:1px dashed var(--line-2)}
+
+/* ---------- gates rail (the six moves) ---------- */
+.rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin:1.6rem 0;counter-reset:step;position:relative;border-top:1px solid var(--line)}
+.rail .step{position:relative;padding:1.1rem 1rem 1.2rem .9rem;border-right:1px solid var(--line);font-size:14px;color:var(--ink-2);line-height:1.45}
+.rail .step:last-child{border-right:0}
+.rail .step::before{counter-increment:step;content:"(" counter(step,decimal-leading-zero) ")";display:block;font-size:13px;color:var(--ink-2);margin-bottom:.7rem}
+.rail .step.gate::before{content:"(" counter(step,decimal-leading-zero) " · human decides)";color:var(--accent)}
+.rail .step b{display:block;font-family:var(--sans);font-weight:500;color:var(--ink);font-size:15px;margin-bottom:.25rem;letter-spacing:-.02em}
+.rail .step.gate{background:var(--accent-soft)}
+
+/* ---------- blockquote ---------- */
+blockquote{font-family:var(--serif);font-style:italic;font-size:clamp(1.35rem,2.2vw,1.75rem);line-height:1.3;letter-spacing:-.02em;color:var(--ink);max-width:30em;margin:1.8rem 0;padding-left:1.2rem;border-left:1px solid var(--ink)}
+blockquote cite{display:block;font-family:var(--sans);font-style:normal;font-size:13px;letter-spacing:-.01em;color:var(--ink-2);margin-top:.7rem}
+blockquote cite::before{content:"— "}
+
+/* ---------- tables ---------- */
+table{width:100%;border-collapse:collapse;font-size:14.5px;margin:1.2rem 0}
+th,td{text-align:left;padding:.7rem .7rem .7rem 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+th{font-weight:500;color:var(--ink);font-size:13px;letter-spacing:-.01em}
+td:first-child{color:var(--ink)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--btn);color:#fff;font-size:13px;letter-spacing:-.01em;padding:.7rem 1.1rem;border:1px solid var(--btn);min-height:40px;transition:background .2s ease}
+.btn:hover{opacity:1;background:var(--ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.btn.ghost:hover{background:rgba(255,255,255,.6)}
+.btn.wide{width:100%}
+.btn.soon,.btn.soon:hover{background:transparent;color:var(--ink-3);border-style:dashed;cursor:default}
+.btn::before{content:"("}.btn::after{content:")"}
+.btn.plain::before,.btn.plain::after{content:""}
+
+/* ---------- contact / close ---------- */
+.close{position:relative;padding-top:clamp(4rem,9vw,7rem);padding-bottom:clamp(3rem,6vw,5rem);border-top:1px solid var(--line);overflow:hidden}
+.close .wm{top:62%;font-size:clamp(4.5rem,15vw,12.5rem);white-space:nowrap}
+.close .cols{position:relative;z-index:1;align-items:start}
+.close h2{font-family:var(--sans);font-weight:400;font-size:15.5px;letter-spacing:-.02em;line-height:1.45;color:var(--ink);max-width:22ch}
+.close .email{display:inline-block;margin-top:1rem;border-bottom:1px solid var(--ink);font-size:15.5px;letter-spacing:-.02em}
+.close .field{font-size:14px;color:var(--ink);margin-bottom:.4rem}
+.close .box{background:#fff;border:1px solid var(--line);min-height:40px;padding:.6rem .7rem;font-size:14px;color:var(--ink-2)}
+.close .stack{display:grid;gap:.9rem}
+.band{background:var(--inverse);color:#fff;font-size:14px;letter-spacing:-.01em;text-align:center;padding:.65rem 1rem;position:relative;z-index:1}
+.band .ac{font-size:1.1em}
+.band .lg{margin:0 .2em}
+
+/* ---------- case pages ---------- */
+.case-head{padding-top:calc(var(--nav-h) + clamp(2.5rem,6vw,4.5rem));padding-bottom:clamp(1.5rem,3vw,2.5rem);border-bottom:1px solid var(--line)}
+.case-head .n{font-size:14px;color:var(--ink-2);display:block;margin-bottom:1rem}
+.case-head .n::before{content:"("}.case-head .n::after{content:")"}
+.case-head h1{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.07em;line-height:1;max-width:20ch;font-variation-settings:"opsz" 96}
+.case-head .lede{margin-top:1.2rem}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:1.6rem}
+.meta div{font-size:14px;color:var(--ink-2)}
+.meta b{display:block;font-weight:600;color:var(--ink);letter-spacing:-.03em;font-size:15px;margin-bottom:.15rem}
+.body{display:grid;grid-template-columns:200px 1fr;gap:clamp(1.5rem,4vw,3rem);padding:clamp(2rem,4vw,3rem) 0;border-bottom:1px solid var(--line)}
+.body aside{font-size:14px;color:var(--ink);position:sticky;top:calc(var(--nav-h) + 1rem);align-self:start}
+.body aside::before{content:"("}.body aside::after{content:")"}
+.body p,.body li{color:var(--ink-2)}
+.body p code{font-family:ui-monospace,Menlo,monospace;font-size:.88em;color:var(--ink)}
+.body>div>*+*{margin-top:1rem}
+.body[id]{scroll-margin-top:calc(var(--nav-h) + .5rem)}
+.body .stats:first-child{margin-top:0}
+@media (max-width:820px){.body{grid-template-columns:1fr;gap:.6rem}.body aside{position:static}}
+.pattern-note{border:1px solid var(--line);padding:1rem 1.2rem;font-size:14px;color:var(--ink-2);max-width:var(--measure);background:rgba(255,255,255,.45)}
+.pattern-note code{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;color:var(--ink)}
+/* "a person decides": the human-in-the-loop mark that replaces the word gate */
+.decides{display:inline-flex;align-items:center;gap:.3em;color:var(--accent);font-weight:500;white-space:nowrap}
+.decides::before{content:"";flex:none;width:1.15em;height:1.15em;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6.4' fill='none' stroke='%23181818' stroke-width='1.1'/><circle cx='8' cy='5.6' r='1.7' fill='%23d4501e'/><path d='M4.8 12c0-2.2 1.4-3.5 3.2-3.5s3.2 1.3 3.2 3.5' fill='none' stroke='%23d4501e' stroke-width='1.2'/></svg>") center/contain no-repeat}
+.rail .step.gate b::before{content:"";display:inline-block;width:1em;height:1em;vertical-align:-.15em;margin-right:.35em;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6.4' fill='none' stroke='%23181818' stroke-width='1.1'/><circle cx='8' cy='5.6' r='1.7' fill='%23d4501e'/><path d='M4.8 12c0-2.2 1.4-3.5 3.2-3.5s3.2 1.3 3.2 3.5' fill='none' stroke='%23d4501e' stroke-width='1.2'/></svg>") center/contain no-repeat}
+.rail .step.gate::before{content:"(" counter(step,decimal-leading-zero) " · a person decides)"}
+/* the system: one simple diagram per case (input → model → check → a person → system of record). The orange dot travels it and waits at the person (--at = that step's centre) */
+.flow{list-style:none;position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);margin:1.2rem 0 .5rem;border:1px solid var(--line-2);background:rgba(255,255,255,.35);counter-reset:step;max-width:none}
+.flow li{position:relative;padding:1rem .8rem 1.1rem;font-size:13.5px;line-height:1.42;color:var(--ink-2)}
+.flow li+li{border-left:1px solid var(--line-2)}
+.flow li::before{counter-increment:step;content:"(" counter(step,decimal-leading-zero) ")";display:block;font-size:12px;letter-spacing:-.015em;white-space:nowrap;color:var(--ink-2);margin-bottom:.5rem}
+.flow li b{display:block;font-weight:500;font-size:15px;letter-spacing:-.02em;line-height:1.2;color:var(--ink);margin-bottom:.25rem}
+.sketch .flow li b{font-family:var(--hand);font-weight:400;font-size:18.5px;letter-spacing:0;line-height:1.1}
+.flow li.person{background:var(--accent-soft)}
+.flow li.person::before{content:"(" counter(step,decimal-leading-zero) " · a person decides)";color:var(--accent)}
+.flow li.person b::before{content:"";display:inline-block;width:.95em;height:.95em;vertical-align:-.12em;margin-right:.3em;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6.4' fill='none' stroke='%23181818' stroke-width='1.1'/><circle cx='8' cy='5.6' r='1.7' fill='%23d4501e'/><path d='M4.8 12c0-2.2 1.4-3.5 3.2-3.5s3.2 1.3 3.2 3.5' fill='none' stroke='%23d4501e' stroke-width='1.2'/></svg>") center/contain no-repeat}
+.flow li+li::after{content:"→";position:absolute;left:0;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;border:1px solid var(--line-2);background:#f6f6f6;display:grid;place-items:center;font-size:12px;line-height:1;color:var(--ink);z-index:1}
+.flow::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--accent);z-index:2;opacity:0;animation:flow-dot 9s var(--ease) infinite;animation-play-state:paused}
+.flow.play::before{animation-play-state:running}
+@keyframes flow-dot{0%{left:0;opacity:0}6%{opacity:1}40%{left:var(--at,50%)}72%{left:var(--at,50%)}94%{left:100%;opacity:1}100%{left:100%;opacity:0}}
+.flow+.small{margin-top:.2rem}
+@media (max-width:760px){
+  .flow{grid-auto-flow:row;grid-auto-columns:auto}
+  .flow li+li{border-left:0;border-top:1px solid var(--line-2)}
+  .flow li+li::after{content:"↓";left:1.6rem;top:0}
+  .flow::before{display:none}
+}
+/* Mock-ups on case pages: made-up content in the real shape of an artifact, never employer data. */
+.mock{margin:1.35rem 0;border:1px solid var(--line-2);background:rgba(255,255,255,.55);padding:1rem 1.15rem .95rem;max-width:none}
+.mock figcaption{font-size:13px;line-height:1.45;color:var(--ink-2);margin-top:.85rem;max-width:var(--measure)}
+.mock h4{font-family:var(--sans);font-weight:600;font-size:15.5px;line-height:1.3;letter-spacing:-.02em;color:var(--ink);margin:.75rem 0 .65rem}
+.mock dl{display:grid;gap:.5rem}
+.mock dl>div{display:grid;grid-template-columns:10.5rem 1fr auto;gap:.9rem;align-items:baseline;font-size:13.5px;line-height:1.4}
+.mock dt{color:var(--ink);font-weight:500}
+.mock dd{color:var(--ink-2)}
+.mock q{font-style:italic;color:var(--ink)}
+.tk-bar{display:flex;flex-wrap:wrap;gap:.35rem .8rem;align-items:baseline;font-size:12.5px;color:var(--ink-2);border-bottom:1px solid var(--line);padding-bottom:.55rem}
+.tk-key{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--ink)}
+.tk-made{margin-left:auto}
+.conf{font-size:10.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);border:1px solid var(--line-2);padding:.08rem .42rem;white-space:nowrap}
+.conf.est{border-style:dashed}
+.conf.lo{color:var(--accent);border-color:var(--accent);border-style:dashed}
+.tk-gates{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;margin-top:.85rem;padding-top:.65rem;border-top:1px solid var(--line);font-size:13px;color:var(--ink-2)}
+.tk-gates>span:first-child{flex:1 1 100%}
+.ol-gov{font-size:14px;color:var(--ink);margin:.75rem 0 .55rem;max-width:none}
+.ol-gov b{font-weight:600}
+.ol-points{list-style:none;counter-reset:pt;display:grid;gap:.35rem;margin:0 0 .7rem;padding:0;max-width:none}
+.ol-points li{counter-increment:pt;display:flex;flex-wrap:wrap;gap:.2rem .8rem;align-items:baseline;font-size:13.5px;color:var(--ink-2);padding-left:1.6rem;position:relative}
+.ol-points li::before{content:counter(pt);position:absolute;left:0;width:1.1rem;text-align:center;font-size:12px;color:var(--ink-2);border:1px solid var(--line-2);border-radius:50%}
+.ol-points b{font-weight:500;color:var(--ink)}
+.ol-flags{border-top:1px dashed var(--line-2);padding-top:.6rem;display:grid;gap:.35rem}
+.ol-flags p{display:flex;gap:.6rem;align-items:baseline;font-size:13.5px;margin:0;max-width:none}
+.mock table{margin:.4rem 0 0;font-size:13.5px}
+.mock table td,.mock table th{padding:.55rem .6rem .55rem 0}
+@media (max-width:640px){.mock dl>div{grid-template-columns:1fr auto}.mock dt{grid-column:1/-1}}
+.diagram.half{max-width:640px}
+.case-head .lede{margin-top:1.2rem}
+.case-quotes{display:grid;gap:1rem}
+.case-quotes blockquote{margin:0;font-size:clamp(1.15rem,1.8vw,1.4rem)}
+.next{display:flex;justify-content:space-between;gap:1rem;padding:2rem 0 3rem;font-size:14px}
+.next a::before{content:"("}.next a::after{content:")"}
+
+/* ---------- landing heads ---------- */
+.page-head{padding-top:calc(var(--nav-h) + clamp(3rem,7vw,5.5rem));padding-bottom:clamp(2rem,5vw,3.5rem);position:relative;overflow:hidden}
+html,body{overflow-x:clip}
+.page-head .kick{font-size:14px;letter-spacing:-.02em;font-weight:500;display:block;margin-bottom:.8rem}
+.page-head h1{font-family:var(--display);font-weight:500;font-size:clamp(2.2rem,6vw,4.4rem);letter-spacing:-.07em;line-height:.98;max-width:16ch;font-variation-settings:"opsz" 96}
+.page-head h1 .ac{font-size:1.02em;letter-spacing:-.03em}
+.page-head .lede{margin-top:1.4rem}
+/* Page-head watermarks stay inside the clipped header so every letter shows ("About", not "Abou"). */
+.page-head .wm{left:auto;right:0;top:40%;transform:translate(0,-50%);font-size:clamp(4.2rem,12vw,11rem);max-width:100%}
+/* About: the portrait is pencil lifted off its paper (tools/portrait.py). site.js draws the line layer in, then the shading settles over it; the line layer only shows while that runs. */
+.page-head.has-portrait{display:grid;grid-template-columns:1fr auto;gap:clamp(1.5rem,4vw,4rem);align-items:end}
+.portrait{margin:0;width:clamp(190px,24vw,300px);position:relative;z-index:1}
+.page-head.has-portrait .wm{top:26%}
+.portrait svg{display:block;width:100%;height:auto;overflow:visible}
+.portrait-lines{opacity:0}
+.portrait.drawing .portrait-lines{opacity:1}
+@media (max-width:760px){.page-head.has-portrait{grid-template-columns:1fr}.portrait{width:220px}}
+.body aside.ic::before,.body aside.ic::after{content:none}
+.body aside.ic span::before{content:"("}.body aside.ic span::after{content:")"}
+.body aside.ic .ic{width:64px;height:52px;margin-bottom:.6rem;overflow:visible}
+/* About illustrations: each animation acts out the section's idea. */
+.about-icon .icon-line{fill:none;stroke:var(--ink);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+.about-icon .icon-hair{fill:none;stroke:var(--line-2);stroke-width:1}
+.about-icon .icon-dot{fill:var(--ink-2)}
+.about-icon .icon-dot.accent{fill:var(--accent)}
+.about-icon .motion{animation-play-state:paused!important}
+.play .about-icon .motion{animation-play-state:running!important}
+.pattern-dot{transform-box:fill-box;animation:pattern-gather 5.6s var(--ease) calc(var(--i,0)*90ms) infinite}
+@keyframes pattern-gather{
+  0%,12%,100%{transform:translate(var(--dx,0),var(--dy,0));opacity:.3}
+  42%,78%{transform:none;opacity:1}
+}
+.people-piece{transform-box:view-box;animation:people-gather 6.2s var(--ease) calc(var(--i,0)*120ms) infinite}
+@keyframes people-gather{
+  0%,12%,100%{transform:translate(var(--dx,0),var(--dy,0));opacity:.35}
+  40%,80%{transform:none;opacity:1}
+}
+.dino-head{transform-box:view-box;transform-origin:39px 32px;animation:dino-nod 5.2s ease-in-out infinite}
+@keyframes dino-nod{0%,18%,72%,100%{transform:rotate(0)}32%{transform:rotate(10deg)}44%{transform:rotate(-4deg)}56%{transform:rotate(3deg)}}
+.toolbox-lid{transform-box:view-box;transform-origin:14px 25px;animation:toolbox-open 5.8s var(--ease) infinite}
+@keyframes toolbox-open{
+  0%,12%,100%{transform:translateY(4px) rotate(0);opacity:.55}
+  28%,78%{transform:translateY(-7px) rotate(-13deg);opacity:1}
+}
+.tool-dot{transform-box:fill-box;animation:tool-drop 5.8s var(--ease) calc(820ms + var(--i,0)*360ms) infinite}
+@keyframes tool-drop{
+  0%,18%{transform:translateY(-22px);opacity:0}
+  28%{opacity:1}
+  48%,78%{transform:none;opacity:1}
+  100%{transform:none;opacity:0}
+}
+.transform-dot{transform-box:view-box;animation:transform-travel 5.8s var(--ease) infinite}
+@keyframes transform-travel{
+  0%,12%{transform:translateX(0);opacity:.35}
+  52%,78%{transform:translateX(35px);opacity:1}
+  100%{transform:translateX(35px);opacity:.35}
+}
+.transform-loop{transform-box:fill-box;transform-origin:center;animation:transform-bloom 5.8s var(--ease) infinite}
+@keyframes transform-bloom{0%,30%{transform:scale(.55);opacity:.25}58%,84%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:.35}}
+/* What I'm looking for: a magnifying glass wanders the field and settles on the orange dot, which lights up when found. */
+.lens{transform-box:view-box;animation:lens-search 7s var(--ease) infinite}
+@keyframes lens-search{
+  0%,8%{transform:translate(-20px,-6px)}
+  30%{transform:translate(4px,-12px)}
+  52%{transform:translate(-12px,10px)}
+  70%,92%{transform:translate(0,0)}
+  100%{transform:translate(-20px,-6px)}
+}
+.found-dot{transform-box:fill-box;transform-origin:center;animation:found 7s var(--ease) infinite}
+@keyframes found{0%,66%{transform:scale(.7);opacity:.35}74%,92%{transform:scale(1.25);opacity:1}100%{transform:scale(.7);opacity:.35}}
+/* Learning: pages turn in a small open book; the orange dot is the line being read. */
+.page-turn{transform-box:view-box;transform-origin:32px 30px;animation:page-flip 6.4s var(--ease) infinite}
+@keyframes page-flip{0%,20%{transform:scaleX(1)}45%,55%{transform:scaleX(-1)}80%,100%{transform:scaleX(1)}}
+.read-dot{transform-box:view-box;animation:read-line 6.4s linear infinite}
+@keyframes read-line{0%{transform:translate(0,0);opacity:0}8%{opacity:1}30%{transform:translate(14px,0)}34%{transform:translate(0,6px)}60%{transform:translate(14px,6px)}64%{transform:translate(0,12px)}88%{transform:translate(14px,12px);opacity:1}100%{transform:translate(14px,12px);opacity:0}}
+.vocab{margin-top:1.4rem;border-top:1px solid var(--line);padding-top:1rem}
+.vocab dl{display:grid;gap:.5rem;margin-top:.6rem}
+.vocab dl div{display:grid;grid-template-columns:12.5rem 1fr;gap:1rem;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
+.vocab dt{color:var(--ink);font-weight:500}
+@media (max-width:640px){.vocab dl div{grid-template-columns:1fr;gap:.1rem}}
+
+/* The skill levels are a deliberately equal comparison, not content-sized columns. */
+#skills table{table-layout:fixed}
+#skills th,#skills td{width:33.333%;font-family:var(--sans)}
+#skills td:first-child{color:var(--ink-2)} /* same visual weight across the three columns */
+
+/* ---------- reveal ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .75s var(--ease),transform .75s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.rv.in{opacity:1;transform:none}
+.no-js .rv{opacity:1;transform:none}
+
+/* ---------- diagrams (inline SVG) ---------- */
+.diagram{margin:1.6rem 0;border:1px solid var(--line);background:rgba(255,255,255,.45);padding:clamp(.8rem,2vw,1.4rem)}
+.diagram svg{width:100%;height:auto}
+/* the full-width loop chains stay legible on phones by scrolling sideways instead of shrinking */
+@media (max-width:640px){.diagram.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}.diagram.wide svg{min-width:680px}.diagram.wide figcaption{position:sticky;left:0}}
+.diagram figcaption{font-size:13px;color:var(--ink-2);margin-top:.7rem;letter-spacing:-.01em}
+.dg-line{stroke:var(--ink);stroke-width:1.2;fill:none}
+.dg-hair{stroke:var(--line-2);stroke-width:1;fill:none}
+.dg-dash{stroke:var(--ink-2);stroke-width:1;fill:none;stroke-dasharray:3 4}
+.dg-t{font-family:var(--sans);font-size:11px;fill:var(--ink);letter-spacing:-.01em}
+.dg-t.muted{fill:var(--ink-2)}
+.dg-t.serif{font-family:var(--serif);font-style:italic;font-size:15px}
+.dg-t.big{font-family:var(--display);font-weight:500;font-size:14px;letter-spacing:-.03em}
+.dg-gate{fill:var(--accent)}
+.dg-gate-soft{fill:var(--accent-soft)}
+.dg-dot{fill:var(--ink)}
+.dg-box{fill:rgba(255,255,255,.8);stroke:var(--ink);stroke-width:1}
+.dg-box.soft{fill:var(--bg-2);stroke:var(--line-2)}
+.dg-t.hand{font-size:12.5px;letter-spacing:-.01em;fill:var(--ink)}
+.dg-t.hand.muted{fill:var(--ink-2)}
+.dg-t.hand.big{font-size:15px}
+.dg-t.hand.sm{font-size:10.5px}
+.sketch .dg-t.hand{font-family:var(--hand);font-size:13.5px;letter-spacing:0}
+.sketch .dg-t.hand.big{font-size:17px}
+.sketch .dg-t.hand.sm{font-size:11.5px}
+.dg-arrow{stroke:var(--ink);stroke-width:1.3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.dg-arrow.soft{stroke:var(--ink-2)}
+
+/* ---------- the loop glyph: hairline base, orange dot, and the trace it leaves (site.js drives [data-trace]) ---------- */
+.loop-base{fill:none;stroke:var(--line-2);stroke-width:1.4}
+.diagram .loop-base,.tile .loop-base{stroke-width:1.2;stroke:var(--stroke)}
+.trail{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;pointer-events:none}
+.diagram .trail,.tile .trail{stroke-width:1.2}
+.trail.t1{opacity:.16}.trail.t2{opacity:.32}.trail.t3{opacity:.7}
+.loop-spin{transform-box:fill-box;transform-origin:center;animation:spin 48s linear infinite;animation-play-state:paused}
+.play .loop-spin{animation-play-state:running}
+.sec-head.has-fig{display:flex;align-items:center;justify-content:space-between;gap:2rem}
+.spin-fig{flex:none;width:clamp(110px,14vw,170px);margin:0}
+.spin-fig svg{width:100%;height:auto;overflow:visible}
+.sec-head.has-fig.tight{justify-content:flex-start;gap:clamp(1.5rem,5vw,4rem)}
+/* The mission line: the kicker reads straight into a bigger, centered headline ("I am on a mission to / Get us all loopy."). */
+.sec-head.mission{padding-bottom:clamp(1.5rem,4vw,2.6rem)}
+.sec-head.mission h2{font-size:clamp(2rem,4.2vw,3.1rem);max-width:16ch}
+/* Home approach: the opening line is the point of the section, so it gets the display face. */
+.approach-lede .hl{display:block;font-family:var(--display);font-weight:500;font-size:clamp(1.45rem,2.4vw,1.9rem);letter-spacing:-.045em;line-height:1.15;color:var(--ink);margin-bottom:.6rem;font-variation-settings:"opsz" 48}
+.approach-top{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(1.5rem,4vw,3rem);align-items:center;margin-bottom:clamp(1.2rem,3vw,2rem)}
+@media (max-width:760px){.approach-top{grid-template-columns:1fr}}
+.diagram.roomy{padding:clamp(1.2rem,3vw,2.4rem)}
+#loops .cols-2{gap:clamp(1.5rem,4vw,3.5rem)}
+@media (max-width:640px){.sec-head.has-fig{flex-direction:column;align-items:flex-start;gap:1rem}.spin-fig.near{margin-right:0}}
+/* the loop as a recurring mark: a small glyph in white space whose dot traces it while in view (at most three per page) */
+.loop-mark{flex:none;width:clamp(64px,7vw,96px);margin:0;opacity:.95}
+.loop-mark svg{width:100%;height:auto;overflow:visible}
+.loop-mark .loop-base{stroke:var(--line-2)}
+/* On Home the loop sits in the empty upper right of a section, clear of the headline and its watermark. */
+.loop-mark.corner{position:absolute;z-index:0;top:clamp(1.25rem,3.2vw,2.75rem);right:calc(var(--gutter) + 20%);width:clamp(56px,6vw,84px)}
+@media (max-width:640px){.loop-mark.corner{right:var(--gutter);top:1rem;width:52px}}
+/* desirability · feasibility · viability */
+.dvf{margin:0;max-width:300px;justify-self:center}
+.dvf svg{width:100%;height:auto;overflow:visible}
+
+/* ---------- sketch: hand-drawn strokes (filter #sketch is injected by site.js), strokes draw themselves in on reveal. html.sketch is on by default; ?sketch=0 turns it off ---------- */
+.sketch .dg-line,.sketch .dg-hair,.sketch .dg-dash,.sketch .dg-box,.sketch .dg-arrow,.sketch .dg-gate-soft,.sketch .tile .dg-dot{filter:url(#sketch)}
+.sketch .tile .art{background:rgba(255,255,255,.38)}
+.sketch .tile:hover .art{background:rgba(255,255,255,.6)}
+.sketch .diagram{background:rgba(255,255,255,.3);border-color:var(--line-2)}
+.sketch svg.draw .dg-line,.sketch svg.draw .dg-line path,.sketch svg.draw .dg-box,.sketch svg.draw .dg-box rect,.sketch svg.draw .dg-arrow{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s var(--ease)}
+.sketch .in svg.draw .dg-line,.sketch .in svg.draw .dg-line path,.sketch .in svg.draw .dg-box,.sketch .in svg.draw .dg-box rect,.sketch .in svg.draw .dg-arrow{stroke-dashoffset:0}
+.sketch svg.draw .dg-box{transition-delay:.2s}
+.sketch svg.draw .dg-arrow{transition-delay:.6s}
+
+/* ---------- orange elements move while in view ([data-anim] gets .play from site.js) ---------- */
+.a{transform-box:fill-box;transform-origin:center;animation-play-state:paused!important}
+.play .a{animation-play-state:running!important}
+.no-js .a{animation:none!important}
+.a-pp{animation:pp 2.8s var(--ease) calc(var(--i,0)*.22s) infinite alternate}
+@keyframes pp{to{transform:translateX(var(--dx,46px))}}
+.a-bob{animation:bob 3.4s ease-in-out infinite alternate}
+@keyframes bob{from{transform:translateY(calc(var(--dy,34px)*-1))}to{transform:translateY(var(--dy,34px))}}
+.a-flag{animation:flag 4.2s var(--ease) calc(var(--i,0)*.7s) infinite}
+@keyframes flag{0%{transform:translateX(34px);opacity:0}22%{transform:none;opacity:1}78%{transform:none;opacity:1}100%{transform:translateX(-10px);opacity:0}}
+.a-fill{transform-origin:left center;animation:fill 5s var(--ease) calc(var(--i,0)*.35s) infinite}
+@keyframes fill{0%{transform:scaleX(0)}38%{transform:scaleX(1)}84%{transform:scaleX(1)}100%{transform:scaleX(0)}}
+.a-seq{animation:seq 6s ease-in-out calc(var(--i,0)*.3s) infinite}
+@keyframes seq{0%{opacity:0}18%{opacity:1}80%{opacity:1}100%{opacity:0}}
+/* Tile 02: each orange square is one request. They start scattered through the grid and slowly sort themselves into the "data and platform" group. 14s per pass; nothing moves fast. */
+.a-sort{transform-box:view-box;animation:sort-into-place 14s cubic-bezier(.45,0,.2,1) calc(var(--i,0)*70ms) infinite}
+@keyframes sort-into-place{
+  0%,16%{transform:translate(var(--sx,0),var(--sy,0));opacity:.45}
+  58%,86%{transform:none;opacity:1}
+  96%{transform:none;opacity:0}
+  100%{transform:translate(var(--sx,0),var(--sy,0));opacity:0}
+}
+.a-travel{offset-path:var(--path);offset-rotate:0deg;animation:travel var(--dur,6.5s) ease-in-out infinite alternate}
+@keyframes travel{from{offset-distance:var(--from,0%)}to{offset-distance:var(--to,100%)}}
+.a-travel-hold{offset-path:var(--path);offset-rotate:0deg;animation:travel-hold var(--dur,6s) ease-in-out infinite}
+@keyframes travel-hold{0%{offset-distance:0%;opacity:0}8%{opacity:1}62%{offset-distance:100%;opacity:1}90%{offset-distance:100%;opacity:1}100%{offset-distance:100%;opacity:0}}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .brand-loop,.open-sign,.about-icon .motion,.a,.loop-spin{animation:none!important}
+  .grid-lines .run,.trail,.flow::before{display:none}
+  .sketch svg.draw .dg-line,.sketch svg.draw .dg-line path,.sketch svg.draw .dg-box,.sketch svg.draw .dg-box rect,.sketch svg.draw .dg-arrow{stroke-dashoffset:0;transition:none}
+  .nav li a>span,.tile .art,.cap,a{transition:none}
+}
+
+/* ---------- print ---------- */
+@media print{
+  :root{--bg:#fff}
+  body{background:#fff;color:#000;font-size:11pt}
+  body::before,.grid-lines .run,.trail{display:none!important}
+  .nav,.grid-lines,.wm,.band,.skip,.next,.pill,.tile .art svg{display:none!important}
+  .hero,.page-head,.case-head{padding-top:0}
+  .lockup{font-size:36pt}
+  .rv{opacity:1;transform:none}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:.8em;color:#555}
+  .sec{padding:1.2rem 0;break-inside:avoid}
+  .cap,.tile,.stat{break-inside:avoid}
+}

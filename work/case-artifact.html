@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js sketch">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The intake method, open source — Christine Nguyen</title>
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg">
+<link rel="stylesheet" href="../assets/css/styles.css?v=20261006d">
+<meta name="description" content="An open-source version of the intake method: a recorded call in, structured requirements and stories out, a confidence score and a quote behind every field, three points where a person says yes, and an eval harness that publishes its own weak spots.">
+<!-- seo:start (managed by tools/set-site-url.py) -->
+<link rel="canonical" href="https://christinenguyen.me/work/case-artifact.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="christine.nguyen">
+<meta property="og:title" content="The intake method, open source — Christine Nguyen">
+<meta property="og:description" content="An open-source version of the intake method: a recorded call in, structured requirements and stories out, a confidence score and a quote behind every field, three points where a person says yes, and an eval harness that publishes its own weak spots.">
+<meta property="og:url" content="https://christinenguyen.me/work/case-artifact.html">
+<meta property="og:image" content="https://christinenguyen.me/assets/img/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The intake method, open source — Christine Nguyen">
+<meta name="twitter:description" content="An open-source version of the intake method: a recorded call in, structured requirements and stories out, a confidence score and a quote behind every field, three points where a person says yes, and an eval harness that publishes its own weak spots.">
+<meta name="twitter:image" content="https://christinenguyen.me/assets/img/og.png">
+<script type="application/ld+json">{
+"@context": "https://schema.org",
+"@graph": [
+{
+"@type": "Person",
+"name": "Christine Nguyen",
+"givenName": "Christine",
+"familyName": "Nguyen",
+"jobTitle": "AI Enablement, Transformation, and Adoption Lead",
+"description": "Enterprise AI enablement, transformation, and adoption lead who translates between the people doing the work, leaders making the decision, and engineers building the system. Turns fuzzy AI asks into clear choices, testable workflows, trusted model decisions, and capabilities teams can own.",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Austin",
+"addressRegion": "TX",
+"addressCountry": "US"
+},
+"email": "mailto:christineqnguyen@gmail.com",
+"sameAs": [
+"https://www.linkedin.com/in/christinenguyen7/",
+"https://github.com/christine-q-nguyen"
+],
+"knowsAbout": [
+"AI enablement",
+"AI transformation",
+"AI adoption",
+"AI Center of Excellence",
+"AI portfolio prioritization",
+"agentic workflows",
+"applied machine learning",
+"AI platform strategy",
+"human-in-the-loop design",
+"responsible AI",
+"LLM evaluation",
+"Model Context Protocol (MCP)",
+"use-case prioritization",
+"service design",
+"user research",
+"product management"
+],
+"alumniOf": [
+{
+"@type": "CollegeOrUniversity",
+"name": "New York University, Interactive Telecommunications Program"
+},
+{
+"@type": "CollegeOrUniversity",
+"name": "The University of Texas at Dallas"
+}
+],
+"@id": "https://christinenguyen.me/#person",
+"url": "https://christinenguyen.me/"
+},
+{
+"@type": "WebPage",
+"@id": "https://christinenguyen.me/work/case-artifact.html",
+"url": "https://christinenguyen.me/work/case-artifact.html",
+"name": "The intake method, open source — Christine Nguyen",
+"description": "An open-source version of the intake method: a recorded call in, structured requirements and stories out, a confidence score and a quote behind every field, three points where a person says yes, and an eval harness that publishes its own weak spots.",
+"isPartOf": {
+"@type": "WebSite",
+"@id": "https://christinenguyen.me/#site",
+"url": "https://christinenguyen.me/",
+"name": "christine.nguyen — Let's get loopy"
+},
+"about": {
+"@id": "https://christinenguyen.me/#person"
+}
+}
+]
+}</script>
+<!-- seo:end -->
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grid-lines" aria-hidden="true"><i></i><i></i></div>
+
+<nav class="nav" aria-label="Primary">
+  <div class="in">
+    <a class="brand" href="../index.html"><span class="ac">christine</span><span class="dot">.</span>nguyen<span class="brand-loop lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span></a>
+    <ul>
+      <li><a href="../index.html#work"><span class="def">Work</span><span class="alt" aria-hidden="true">Work</span></a></li>
+      <li><a href="../index.html#open-source" aria-current="true"><span class="def">Open Source</span><span class="alt" aria-hidden="true">Open Source</span></a></li>
+      <li><a href="../index.html#approach"><span class="def">Approach</span><span class="alt" aria-hidden="true">Approach</span></a></li>
+      <li hidden><a href="../writing.html"><span class="def">Writing</span><span class="alt" aria-hidden="true">Writing</span></a></li>
+      <li hidden><a href="../research.html"><span class="def">Research</span><span class="alt" aria-hidden="true">Research</span></a></li>
+      <li><a href="../about.html"><span class="def">About</span><span class="alt" aria-hidden="true">About</span></a></li>
+    </ul>
+    <a class="pill" href="../index.html#contact"><span class="open-sign" aria-hidden="true"><span>OPEN</span></span><span class="txt">to work</span></a>
+  </div>
+</nav>
+<header class="wrap case-head">
+  <span class="n">08 · Open source</span>
+  <h1>The intake pattern, rebuilt from scratch <em class="ac">so you can inspect it.</em></h1>
+  <p class="lede">Confidential work is hard to evaluate from the outside, so I rebuilt the intake method in public. You can inspect every field, source quote, confidence score, approval, test, and weak spot instead of taking my word for it.</p>
+  <p class="out"><b>22 fields</b><span>each with a quote and a confidence score; evals published as-is</span></p>
+  <div class="meta"><div><b>My role</b>Designed and wrote it, alone</div><div><b>When</b>Sep 2026</div><div><b>Data</b>Synthetic only; MIT licensed</div><div><b>Status</b>Working; evals published</div></div>
+</header>
+
+<main class="wrap" id="main">
+  <div class="body rv"><aside>The problem</aside><div>
+    <p>For a year I'd argued that the way to fix requirements is to encode the discovery method itself, keep the human decision inside the workflow, and write down what good looks like before anyone argues about a demo. The only proof I had was work nobody outside my company could open. <strong>Confidential systems make a weak argument.</strong></p>
+  </div></div>
+
+  <div class="body rv"><aside>My role</aside><div>
+    <p>I designed and wrote all of it, alone and from scratch: no proprietary code, prompts, data, or names. Three fictional discovery calls in three recording formats are the test set.</p>
+  </div></div>
+
+  <div class="body rv"><aside>The decision</aside><div>
+    <p><strong>Write the eval before tuning anything, and publish what it says.</strong> I would have spent the whole time improving extraction. The eval said extraction was fine and calibration was broken: my confidence scores weren't calibrated at the top of the range. So the README shows the weak spots instead of an accuracy headline.</p>
+  </div></div>
+
+  <div class="body rv" id="system"><aside>The system</aside><div>
+    <ol class="flow" data-anim style="--at:70%">
+      <li><b>recorded call</b>three formats, all synthetic</li>
+      <li><b>extract</b>22 fields, each with a quote and a confidence score</li>
+      <li><b>score</b>DFV and RICE, plus the requirement nobody said out loud</li>
+      <li class="person"><b>three approvals</b>speakers, summary, stories</li>
+      <li><b>stories out</b>a structured record and a Jira-ready export</li>
+    </ol>
+    <p class="small">An MCP server exposes read-only tools to an agent client, with allow-listed paths and no reachable credentials.</p>
+    <div class="chips"><b>Built with</b><span>Python (stdlib core)</span><span>CLI</span><span>MCP server</span><span>Eval harness</span><span>Risk–coverage curve</span><span>Jira export</span><span>pytest</span></div>
+  </div></div>
+
+  <div class="body rv"><aside>The result</aside><div>
+    <div class="stats">
+      <div class="stat"><div class="v">22</div><div class="l">fields, each with the quote it came from and a confidence score</div></div><div class="stat"><div class="v">3</div><div class="l">points where a person says yes before anything is written</div></div><div class="stat"><div class="v">13</div><div class="l">tests, and CI re-runs the published eval on every push</div></div>
+    </div>
+  </div></div>
+
+  <div class="body rv" id="eval"><aside>How I knew it worked</aside><div>
+    <p>The eval harness reports field accuracy, faithfulness, coverage, DFV label match, judge agreement with κ, and a risk–coverage curve. <strong>It publishes the weak spots:</strong> a non-monotone curve and a judge that agreed with the gold labels no better than chance on one metric. You can see where it breaks before you trust it.</p>
+    <figure class="diagram">
+      <svg viewBox="0 0 640 300" role="img" aria-labelledby="eval-curve-title">
+        <title id="eval-curve-title">Risk among auto-accepted fields at each confidence threshold: 21% at 0.5, 19% at 0.6, 15% at 0.7, 20% at 0.8, and 30% at 0.9. Those thresholds auto-accept 100%, 71%, 41%, 30%, and 15% of fields. Risk is lowest at 0.7 and climbs again above it.</title>
+        <text class="dg-t muted" x="24" y="26">risk among the fields it auto-accepts, by confidence threshold</text>
+        <g class="dg-hair"><path d="M60 230H600"/><path d="M60 178.6H600M60 127.1H600M60 75.7H600" stroke-dasharray="2 5"/></g>
+        <g class="dg-t muted" text-anchor="end"><text x="52" y="182">10%</text><text x="52" y="131">20%</text><text x="52" y="79">30%</text></g>
+        <path class="dg-dash" d="M330 152.9V230"/>
+        <path class="dg-line" d="M80 122L205 132.3L330 152.9L455 127.1L580 75.7"/>
+        <g class="dg-dot"><circle cx="80" cy="122" r="3.5"/><circle cx="205" cy="132.3" r="3.5"/><circle cx="455" cy="127.1" r="3.5"/><circle cx="580" cy="75.7" r="3.5"/></g>
+        <circle class="dg-gate" cx="330" cy="152.9" r="5.5"/>
+        <circle class="dg-line" cx="580" cy="75.7" r="13"/>
+        <g class="dg-t" text-anchor="middle"><text x="80" y="110">21%</text><text x="205" y="120">19%</text><text x="330" y="140">15%</text><text x="455" y="115">20%</text></g>
+        <text class="dg-t hand" x="560" y="50" text-anchor="end">30%: the curve climbs again</text>
+        <text class="dg-t hand" x="342" y="190">auto-accept from 0.7;</text>
+        <text class="dg-t hand" x="342" y="206">everything below goes to a person</text>
+        <g class="dg-t" text-anchor="middle"><text x="80" y="250">0.5</text><text x="205" y="250">0.6</text><text x="330" y="250">0.7</text><text x="455" y="250">0.8</text><text x="580" y="250">0.9</text></g>
+        <g class="dg-t muted" text-anchor="middle"><text x="80" y="266">takes 100%</text><text x="205" y="266">71%</text><text x="330" y="266">41%</text><text x="455" y="266">30%</text><text x="580" y="266">15%</text></g>
+        <text class="dg-t muted" x="24" y="290">of fields auto-accepted at each threshold · 3 synthetic calls, heuristic baseline</text>
+      </svg>
+      <figcaption>The eval as the README publishes it. Risk bottoms out at 0.7 and climbs again above it, because the baseline over-trusts any sentence with a number in it. So 0.7 is the auto-accept line, and everything below it goes to a person. The same run found a rubric judge that agreed 96% of the time with κ = 0: it never said no, so it can't be trusted yet.</figcaption>
+    </figure>
+  </div></div>
+
+  <div class="body rv"><aside>Who owns it now</aside><div>
+    <p><strong>Anyone can.</strong> The method is inspectable from the outside, so you can run it instead of taking my word for it.</p>
+    <p class="small">Repository: <a class="link" href="https://github.com/christine-q-nguyen/transcript-to-requirements" rel="me">github.com/christine-q-nguyen/transcript-to-requirements</a>. Its sister project: <a class="link" href="case-portfolio-method.html">How I built this portfolio, open source</a>.</p>
+  </div></div>
+
+  <div class="body rv"><aside>What I learned</aside><div>
+    <ul>
+      <li><strong>Traceability is the reliable part.</strong> Every field quotes its source. Completeness still needs the person, which is why the three approvals exist.</li>
+      <li><strong>Publish the failure modes.</strong> A README that shows κ = 0 on one judge is worth more than one that claims 95% accuracy.</li>
+    </ul>
+  </div></div>
+
+  <div class="next"><a href="../index.html#open-source">All open source</a><a href="case-portfolio-method.html">Next: How I built this portfolio, open source</a></div>
+</main>
+<footer class="band"><span class="ac">christine</span><span class="dot">.</span>nguyen <span class="lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span> (Austin · a work in progress, 2008 – present)</footer>
+<script src="../assets/js/site.js?v=20261006d" defer></script>
+</body>
+</html>

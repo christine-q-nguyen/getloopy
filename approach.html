@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js sketch">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Hidden Oct 5: the nav's Approach link jumps to How I work on the home page instead. Kept for later. To restore, drop this noindex, point the nav back here, and re-add it to the sitemap in tools/set-site-url.py. -->
+<meta name="robots" content="noindex, follow">
+<title>Approach — how I run AI enablement in loops — Christine Nguyen</title>
+<meta name="description" content="How I turn fuzzy AI requests into something a team can try, learn from, and own: keep people inside the decisions, let real use create the feedback, and improve each version against a bar written down before the demo.">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="assets/css/styles.css?v=20261006d">
+<!-- seo:start (managed by tools/set-site-url.py) -->
+<link rel="canonical" href="https://christinenguyen.me/approach.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="christine.nguyen">
+<meta property="og:title" content="Approach — how I run AI enablement in loops — Christine Nguyen">
+<meta property="og:description" content="How I turn fuzzy AI requests into something a team can try, learn from, and own: keep people inside the decisions, let real use create the feedback, and improve each version against a bar written down before the demo.">
+<meta property="og:url" content="https://christinenguyen.me/approach.html">
+<meta property="og:image" content="https://christinenguyen.me/assets/img/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Approach — how I run AI enablement in loops — Christine Nguyen">
+<meta name="twitter:description" content="How I turn fuzzy AI requests into something a team can try, learn from, and own: keep people inside the decisions, let real use create the feedback, and improve each version against a bar written down before the demo.">
+<meta name="twitter:image" content="https://christinenguyen.me/assets/img/og.png">
+<script type="application/ld+json">{
+"@context": "https://schema.org",
+"@graph": [
+{
+"@type": "Person",
+"name": "Christine Nguyen",
+"givenName": "Christine",
+"familyName": "Nguyen",
+"jobTitle": "AI Enablement, Transformation, and Adoption Lead",
+"description": "Enterprise AI enablement, transformation, and adoption lead who translates between the people doing the work, leaders making the decision, and engineers building the system. Turns fuzzy AI asks into clear choices, testable workflows, trusted model decisions, and capabilities teams can own.",
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "Austin",
+"addressRegion": "TX",
+"addressCountry": "US"
+},
+"email": "mailto:christineqnguyen@gmail.com",
+"sameAs": [
+"https://www.linkedin.com/in/christinenguyen7/",
+"https://github.com/christine-q-nguyen"
+],
+"knowsAbout": [
+"AI enablement",
+"AI transformation",
+"AI adoption",
+"AI Center of Excellence",
+"AI portfolio prioritization",
+"agentic workflows",
+"applied machine learning",
+"AI platform strategy",
+"human-in-the-loop design",
+"responsible AI",
+"LLM evaluation",
+"Model Context Protocol (MCP)",
+"use-case prioritization",
+"service design",
+"user research",
+"product management"
+],
+"alumniOf": [
+{
+"@type": "CollegeOrUniversity",
+"name": "New York University, Interactive Telecommunications Program"
+},
+{
+"@type": "CollegeOrUniversity",
+"name": "The University of Texas at Dallas"
+}
+],
+"@id": "https://christinenguyen.me/#person",
+"url": "https://christinenguyen.me/"
+},
+{
+"@type": "WebPage",
+"@id": "https://christinenguyen.me/approach.html",
+"url": "https://christinenguyen.me/approach.html",
+"name": "Approach — how I run AI enablement in loops — Christine Nguyen",
+"description": "How I turn fuzzy AI requests into something a team can try, learn from, and own: keep people inside the decisions, let real use create the feedback, and improve each version against a bar written down before the demo.",
+"isPartOf": {
+"@type": "WebSite",
+"@id": "https://christinenguyen.me/#site",
+"url": "https://christinenguyen.me/",
+"name": "christine.nguyen — Let's get loopy"
+},
+"about": {
+"@id": "https://christinenguyen.me/#person"
+}
+}
+]
+}</script>
+<!-- seo:end -->
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="grid-lines" aria-hidden="true"><i></i><i></i></div>
+
+<nav class="nav" aria-label="Primary">
+  <div class="in">
+    <a class="brand" href="index.html"><span class="ac">christine</span><span class="dot">.</span>nguyen<span class="brand-loop lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span></a>
+    <ul>
+      <li><a href="index.html#work"><span class="def">Work</span><span class="alt" aria-hidden="true">Work</span></a></li>
+      <li><a href="index.html#open-source"><span class="def">Open Source</span><span class="alt" aria-hidden="true">Open Source</span></a></li>
+      <li><a href="index.html#approach"><span class="def">Approach</span><span class="alt" aria-hidden="true">Approach</span></a></li>
+      <li hidden><a href="writing.html"><span class="def">Writing</span><span class="alt" aria-hidden="true">Writing</span></a></li>
+      <li hidden><a href="research.html"><span class="def">Research</span><span class="alt" aria-hidden="true">Research</span></a></li>
+      <li><a href="about.html"><span class="def">About</span><span class="alt" aria-hidden="true">About</span></a></li>
+    </ul>
+    <a class="pill" href="index.html#contact"><span class="open-sign" aria-hidden="true"><span>OPEN</span></span><span class="txt">to work</span></a>
+  </div>
+</nav>
+
+<main id="main">
+  <header class="wrap page-head">
+    <span class="wm" aria-hidden="true">Loops</span>
+    <span class="kick rv">Approach · how I run AI enablement and transformation</span>
+    <h1 class="rv" style="--i:1">The work doesn't run in a line anymore. It runs in <em class="ac">loops.</em></h1>
+    <p class="lede rv" style="--i:2">The work gets more interesting when a team can touch something early. Every version gives us evidence, every round of testing ends with a clear decision about what to change next, and the people doing the work stay inside the loop.</p>
+  </header>
+
+  <!-- 01 · the three loops -->
+  <section class="wrap sec" id="loops">
+    <header class="sec-head left rv"><span class="wm" aria-hidden="true">Loopy</span><span class="kick">01</span><h2>So what does it mean to get loopy?</h2></header>
+    <div class="cols-2">
+      <div class="rv" style="--i:1">
+        <p class="lede">Three loops. Miss one and the other two stop paying off.</p>
+        <ul class="plain" style="margin-top:1.2rem">
+          <li><strong>Human in the loop.</strong> People bring the judgment, the taste, and the leadership; AI needs more of them, not fewer. The decision stays with a person at the kickoff and at every handoff: three approvals on intake, "flag, never silently correct" as a logged ruling, thresholds that route the uncertain cases to a person. <em class="ac">The approval is cheap; deciding what to send through it is the design.</em></li>
+          <li><strong>Feedback loop.</strong> Measure what success looks like for the person using it, not the dashboard. Engineering was the acceptance test for the intake skill: if an engineer couldn't start a POC from the output, it wasn't working. Reader tests with editors on live reports. <em class="ac">The corrections are the requirements.</em></li>
+          <li><strong>Continuous improvement loop.</strong> A new model every week, and people learning at warp speed. The intake skill took one to two months of refinement as I did more intake. Freeze, batch, run variants, replay, then decide. <em class="ac">A faster draft that adds risk downstream isn't a win.</em></li>
+        </ul>
+        <p style="margin-top:1.2rem">In the middle sits what keeps them honest: <strong>what good looks like, written down before the first draft.</strong> Without it, a loop just spins.</p>
+      </div>
+      <figure class="diagram marks roomy rv" style="--i:2"><span class="x"></span>
+        <svg viewBox="-24 -16 568 462" role="img" aria-labelledby="dg-loops-title" data-trace="22">
+          <title id="dg-loops-title">One hand-drawn loop through the work, with three named loops on it: human in the loop at the gates, feedback where it is used for real, and continuous improvement where it is refined. An orange dot travels the loop.</title>
+          <circle class="dg-gate-soft" cx="465" cy="215" r="22"/><circle class="dg-gate-soft" cx="55" cy="215" r="22"/><circle class="dg-gate-soft" cx="368" cy="330" r="22"/>
+          <path class="loop-base" d="M260 73C372 70 462 134 466 213C470 292 376 360 262 357C150 354 52 296 54 217C56 138 148 76 260 73"/>
+          <circle class="dg-gate trace-dot" cx="260" cy="73" r="6"/>
+          <g class="dg-arrow soft"><path d="M378 95l8 7-10 3"/><path d="M142 338l-8-7 10-3"/></g>
+          <g class="dg-t hand">
+            <text x="260" y="62" text-anchor="middle">record the call</text>
+            <text x="440" y="118" text-anchor="middle">extract · 22 fields</text>
+            <text x="448" y="300" text-anchor="middle">build v1 · a week</text>
+            <text x="260" y="384" text-anchor="middle">use it on real work</text>
+            <text x="80" y="300" text-anchor="middle">refine on feedback</text>
+            <text x="86" y="118" text-anchor="middle">they own it</text>
+          </g>
+          <g transform="translate(465 215)" aria-hidden="true"><circle r="13" class="dg-line" fill="var(--bg)"/><circle cy="-3.8" r="3" fill="var(--accent)"/><path d="M-6 7.5c0-4.3 2.7-6.7 6-6.7s6 2.4 6 6.7" fill="none" stroke="var(--accent)" stroke-width="1.5"/></g>
+          <circle class="dg-gate" cx="55" cy="215" r="7"/>
+          <circle class="dg-gate" cx="368" cy="330" r="7"/>
+          <text class="dg-t hand" x="436" y="212" text-anchor="end">① human</text><text class="dg-t hand muted" x="436" y="228" text-anchor="end">in the loop</text>
+          <text class="dg-t hand" x="372" y="374" text-anchor="middle">② feedback</text>
+          <text class="dg-t hand" x="30" y="254">③ improve</text>
+          <text class="dg-t serif" x="176" y="206" style="font-size:19px">what good looks like</text>
+          <text class="dg-t hand muted" x="260" y="228" text-anchor="middle">written first · pass/fail · per job</text>
+          <text class="dg-t hand muted" x="260" y="246" text-anchor="middle">and a log of every ruling, with a named verifier</text>
+        </svg>
+        <figcaption>One turn through the work. A person decides at the orange points, the work reports back from real use, and the next turn is better than the last.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 02 · what changed -->
+  <section class="wrap sec" id="what-changed">
+    <header class="sec-head left rv"><span class="kick">02</span><h2>What changed, in one table</h2></header>
+    <table class="rv" style="--i:1">
+      <tr><th style="width:18%"></th><th style="width:38%">The line (how it used to run)</th><th>The loops (how I run it now)</th></tr>
+      <tr><td>How the ask arrives</td><td>A deck, then three or four intake calls, then weeks of research. About two months to an intake, and another month or two to turn business asks into technical requirements.</td><td>We record the working session. A skill turns the recording and transcript into a structured story—requirements, open questions, and talking points—the same day. With those requirements in hand, I know whether I can build the first version myself or hand it to an engineer.</td></tr>
+      <tr><td>Who does what</td><td>PM, then design, then engineering. Sequential handoffs. Engineers start from a blank page.</td><td>User, PM, and engineer on the same recording. I propose a first-draft solution and they correct it live. <strong>The corrections are the requirements.</strong></td></tr>
+      <tr><td>Cycle time</td><td>Intake in two to four months; a POC a month or two after that.</td><td>One intake, and a week later a working POC.</td></tr>
+      <tr><td>How "good" gets defined</td><td>After the demo, by whoever is loudest.</td><td>Before the build, in writing: pass/fail rubrics and release thresholds per job. A person decides inside each loop, and every ruling is logged.</td></tr>
+    </table>
+  </section>
+
+  <!-- 03 · steps -->
+  <section class="wrap sec" id="steps">
+    <header class="sec-head left rv"><span class="kick">03</span><h2>Steps to get loopy</h2></header>
+    <figure class="diagram wide rv" style="--i:1">
+      <svg viewBox="0 0 740 236" role="img" aria-labelledby="dg-steps-title" data-trace="20">
+        <title id="dg-steps-title">The five steps drawn as one thread of five loops. Define the problem and triage sit in the feedback loop, build or reuse in the improvement loop, and what good looks like and enable are human gates where a person decides. An orange dot travels the thread.</title>
+        <circle class="dg-gate-soft" cx="510" cy="84" r="40"/><circle class="dg-gate-soft" cx="650" cy="84" r="40"/>
+        <path class="loop-base" d="M20 152C26.6 150.7 47.7 149.2 59.7 144.5C71.6 139.8 83.3 132.1 91.8 124C100.4 115.9 107.1 105.3 111 96C114.9 86.7 115.9 76.1 115.2 68C114.4 59.9 110.5 52.2 106.3 47.5C102.1 42.8 95.4 40 90 40C84.6 40 77.9 42.8 73.7 47.5C69.5 52.2 65.6 59.9 64.8 68C64.1 76.1 65.1 86.7 69 96C72.9 105.3 79.6 115.9 88.2 124C96.7 132.1 108.4 139.8 120.3 144.5C132.3 149.2 146.8 152 160 152C173.2 152 187.7 149.2 199.7 144.5C211.6 139.8 223.3 132.1 231.8 124C240.4 115.9 247.1 105.3 251 96C254.9 86.7 255.9 76.1 255.2 68C254.4 59.9 250.5 52.2 246.3 47.5C242.1 42.8 235.4 40 230 40C224.6 40 217.9 42.8 213.7 47.5C209.5 52.2 205.6 59.9 204.8 68C204.1 76.1 205.1 86.7 209 96C212.9 105.3 219.6 115.9 228.2 124C236.7 132.1 248.4 139.8 260.3 144.5C272.3 149.2 286.8 152 300 152C313.2 152 327.7 149.2 339.7 144.5C351.6 139.8 363.3 132.1 371.8 124C380.4 115.9 387.1 105.3 391 96C394.9 86.7 395.9 76.1 395.2 68C394.4 59.9 390.5 52.2 386.3 47.5C382.1 42.8 375.4 40 370 40C364.6 40 357.9 42.8 353.7 47.5C349.5 52.2 345.6 59.9 344.8 68C344.1 76.1 345.1 86.7 349 96C352.9 105.3 359.6 115.9 368.2 124C376.7 132.1 388.4 139.8 400.3 144.5C412.3 149.2 426.8 152 440 152C453.2 152 467.7 149.2 479.7 144.5C491.6 139.8 503.3 132.1 511.8 124C520.4 115.9 527.1 105.3 531 96C534.9 86.7 535.9 76.1 535.2 68C534.4 59.9 530.5 52.2 526.3 47.5C522.1 42.8 515.4 40 510 40C504.6 40 497.9 42.8 493.7 47.5C489.5 52.2 485.6 59.9 484.8 68C484.1 76.1 485.1 86.7 489 96C492.9 105.3 499.6 115.9 508.2 124C516.7 132.1 528.4 139.8 540.3 144.5C552.3 149.2 566.8 152 580 152C593.2 152 607.7 149.2 619.7 144.5C631.6 139.8 643.3 132.1 651.8 124C660.4 115.9 667.1 105.3 671 96C674.9 86.7 675.9 76.1 675.2 68C674.4 59.9 670.5 52.2 666.3 47.5C662.1 42.8 655.4 40 650 40C644.6 40 637.9 42.8 633.7 47.5C629.5 52.2 625.6 59.9 624.8 68C624.1 76.1 625.1 86.7 629 96C632.9 105.3 639.6 115.9 648.2 124C656.7 132.1 668.4 139.8 680.3 144.5C692.3 149.2 713.4 150.7 720 152"/>
+        <circle class="dg-gate trace-dot" cx="20" cy="152" r="6"/>
+        <g class="dg-arrow soft"><path d="M156 147.5l6 4.5-6 4.5"/><path d="M296 147.5l6 4.5-6 4.5"/><path d="M436 147.5l6 4.5-6 4.5"/><path d="M576 147.5l6 4.5-6 4.5"/></g>
+        <g class="dg-t hand">
+          <text x="90" y="178" text-anchor="middle">define the problem</text>
+          <text x="230" y="178" text-anchor="middle">triage</text>
+          <text x="370" y="178" text-anchor="middle">build or reuse</text>
+          <text x="510" y="178" text-anchor="middle">what good looks like</text>
+          <text x="650" y="178" text-anchor="middle">enable</text>
+        </g>
+        <g transform="translate(510 84)" aria-hidden="true"><circle r="12" class="dg-line"/><circle cy="-3.5" r="2.8" fill="var(--accent)"/><path d="M-5.6 7c0-4 2.5-6.2 5.6-6.2S5.6 3 5.6 7" fill="none" stroke="var(--accent)" stroke-width="1.5"/></g>
+        <g transform="translate(650 84)" aria-hidden="true"><circle r="12" class="dg-line"/><circle cy="-3.5" r="2.8" fill="var(--accent)"/><path d="M-5.6 7c0-4 2.5-6.2 5.6-6.2S5.6 3 5.6 7" fill="none" stroke="var(--accent)" stroke-width="1.5"/></g>
+        <g class="dg-arrow soft"><path d="M30 194q130 16 260 0"/><path d="M318 194q52 16 104 0"/><path d="M450 194q130 16 260 0"/></g>
+        <g class="dg-t hand muted">
+          <text x="160" y="226" text-anchor="middle">the feedback loop</text>
+          <text x="370" y="226" text-anchor="middle">the improvement loop</text>
+          <text x="580" y="226" text-anchor="middle">human in the loop · a person decides</text>
+        </g>
+      </svg>
+      <figcaption>Five steps on one thread: the first two turn in the feedback loop, the third in the improvement loop, and a person decides at the last two.</figcaption>
+    </figure>
+    <div class="rail rv" style="--i:2">
+      <div class="step"><b>Define the problem</b>Record the real work. Evidence behind every claim.</div>
+      <div class="step"><b>Triage</b>Wanted, buildable, needed? Then start, stop, continue, or defer, in writing.</div>
+      <div class="step"><b>Build or reuse</b>Use what exists. Build only the part that's yours.</div>
+      <div class="step gate"><b>Define what good looks like</b>Pass/fail rubrics and thresholds before the demo, not after.</div>
+      <div class="step gate"><b>Enable</b>Co-build with the team, then hand it off. You own it.</div>
+    </div>
+  </section>
+
+  <!-- 04 · the weave: the loops, laid end to end across a whole project -->
+  <section class="wrap sec" id="weave">
+    <header class="sec-head left rv"><span class="wm" aria-hidden="true">Weave</span><span class="kick">04</span><h2>The weave: the loops, laid end to end</h2></header>
+    <div class="cols-2 rv" style="--i:1">
+      <p>Zoom out from one loop to a whole project and this is what the loops look like: one thread from research to launch, with something working at every turn.</p>
+      <p style="margin-top:0">The same work gets a prototype at every turn, and the arrows that matter most run backwards—each prototype teaches us something that improves the step before it.</p>
+    </div>
+    <figure class="diagram wide rv" style="--i:2">
+      <svg viewBox="0 -8 900 282" role="img" aria-labelledby="dg-weave-title" data-trace="26">
+        <title id="dg-weave-title">The process as one thread from research to a better launch: research, ideation, concept prototype, spec, detailed design, design prototype, technical prototype, a better launch. The three prototypes are drawn as loops where a person decides; a dashed hand-drawn arrow runs back from the design prototype to the step before it, and a long dashed arrow returns from the launch to research.</title>
+        <circle class="dg-gate-soft" cx="266" cy="104" r="38"/><circle class="dg-gate-soft" cx="590" cy="104" r="38"/><circle class="dg-gate-soft" cx="698" cy="104" r="38"/>
+        <path class="loop-base" d="M14 150H218c6.7 -1 21 -2.2 30 -5.9c9 -3.7 17.8 -9.8 24.1 -16.1c6.3 -6.4 11.2 -14.7 13.9 -22c2.7 -7.3 3.1 -15.6 2.1 -22c-1 -6.4 -4.4 -12.4 -8.1 -16.1c-3.7 -3.7 -9.3 -5.9 -14 -5.9c-4.7 0 -10.3 2.2 -14 5.9c-3.7 3.7 -7.1 9.8 -8.1 16.1c-1 6.4 -0.6 14.7 2.1 22c2.7 7.3 7.6 15.6 13.9 22c6.3 6.4 15.1 12.4 24.1 16.1c9 3.7 23.3 4.9 30 5.9H542c6.7 -1 21 -2.2 30 -5.9c9 -3.7 17.8 -9.8 24.1 -16.1c6.3 -6.4 11.2 -14.7 13.9 -22c2.7 -7.3 3.1 -15.6 2.1 -22c-1 -6.4 -4.4 -12.4 -8.1 -16.1c-3.7 -3.7 -9.3 -5.9 -14 -5.9c-4.7 0 -10.3 2.2 -14 5.9c-3.7 3.7 -7.1 9.8 -8.1 16.1c-1 6.4 -0.6 14.7 2.1 22c2.7 7.3 7.6 15.6 13.9 22c6.3 6.4 15.1 12.4 24.1 16.1c9 3.7 23.3 4.9 30 5.9H650c6.7 -1 21 -2.2 30 -5.9c9 -3.7 17.8 -9.8 24.1 -16.1c6.3 -6.4 11.2 -14.7 13.9 -22c2.7 -7.3 3.1 -15.6 2.1 -22c-1 -6.4 -4.4 -12.4 -8.1 -16.1c-3.7 -3.7 -9.3 -5.9 -14 -5.9c-4.7 0 -10.3 2.2 -14 5.9c-3.7 3.7 -7.1 9.8 -8.1 16.1c-1 6.4 -0.6 14.7 2.1 22c2.7 7.3 7.6 15.6 13.9 22c6.3 6.4 15.1 12.4 24.1 16.1c9 3.7 23.3 4.9 30 5.9H866"/>
+        <circle class="dg-gate trace-dot" cx="14" cy="150" r="6"/>
+        <g class="dg-arrow soft"><path d="M100 145.5l6 4.5-6 4.5"/><path d="M424 145.5l6 4.5-6 4.5"/><path d="M840 145.5l6 4.5-6 4.5"/></g>
+        <g class="dg-t hand">
+          <text x="50" y="180" text-anchor="middle">research</text>
+          <text x="158" y="180" text-anchor="middle">ideation</text>
+          <text x="266" y="180" text-anchor="middle">concept</text><text x="266" y="198" text-anchor="middle">prototype</text>
+          <text x="374" y="180" text-anchor="middle">spec</text>
+          <text x="482" y="180" text-anchor="middle">detailed design</text>
+          <text x="590" y="180" text-anchor="middle">design</text><text x="590" y="198" text-anchor="middle">prototype</text>
+          <text x="698" y="180" text-anchor="middle">technical</text><text x="698" y="198" text-anchor="middle">prototype</text>
+          <text x="806" y="180" text-anchor="middle">a better launch</text>
+        </g>
+        <defs><marker id="ah-wv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1.5L8 5L2 8.5" fill="none" stroke="var(--ink-2)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+        <path class="dg-dash" d="M582 212C560 252 506 252 486 194" marker-end="url(#ah-wv)"/>
+        <path class="dg-dash" d="M868 146C905 110 890 14 800 14H110C10 14 -14 110 12 144" marker-end="url(#ah-wv)"/>
+        <text class="dg-t hand muted" x="450" y="8" text-anchor="middle">then around again, with the next thing</text>
+        <text class="dg-t hand muted" x="534" y="262" text-anchor="middle">each prototype improves the step before it</text>
+      </svg>
+      <figcaption>Research to a better launch as one thread, with a prototype at every turn.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 05 · listening -->
+  <section class="wrap sec" id="listening" hidden>
+    <header class="sec-head left rv"><span class="kick">05 · the feedback loop, in practice</span><h2>Listening: the 45-minute interview I rewrote after the first real run</h2></header>
+    <div class="cols-2">
+      <div class="rv" style="--i:1">
+        <p>My workflow-capture guide is on its second version because the first one met a real user and lost: the screen share started at minute five instead of sixteen, and the wrap-up never happened. So v2 made that the design. The lines that carry it:</p>
+        <ul class="ul">
+          <li>"Get on their screen early and harvest pain <em class="ac">from</em> the walkthrough, not before it."</li>
+          <li>"Any pain points at this part?" Asked at every step, not once.</li>
+          <li>"How long does it <em class="ac">feel</em> like it takes?" People can't compute averages live. They can report a feeling.</li>
+          <li>"Now I'm going to prescribe a solution, not because I think it's right, but so I can check I understand the problem. What am I missing?"</li>
+          <li>"What stays yours in that picture, and what would you hand over?" That's where the human/AI line gets drawn, in their words.</li>
+          <li>"What would have to be true for you to actually trust it?" The question most often lost to the clock, and the one engineering needs most.</li>
+        </ul>
+        <p class="small">The workflow map gets drafted after the call and sent for async correction.</p>
+      </div>
+      <figure class="diagram rv" style="--i:2">
+        <svg viewBox="0 0 360 416" role="img" aria-labelledby="dg-tb-title">
+          <title id="dg-tb-title">The 45-minute timebox as a vertical timeline: frame (minutes 0 to 2), orient (2 to 7), walkthrough on their screen with pain at every step (7 to 27), rank and quantify (27 to 36), magic wand and straw-man (36 to 43, a human gate), wrap (43 to 45). Notes underneath record what changed from v1 to v2.</title>
+          <g class="dg-box soft"><rect x="56" y="24" width="40" height="12"/><rect x="56" y="36" width="40" height="30"/><rect x="56" y="66" width="40" height="120"/><rect x="56" y="186" width="40" height="54"/><rect x="56" y="282" width="40" height="12"/></g>
+          <rect class="dg-gate-soft" x="56" y="240" width="40" height="42"/><rect class="dg-box" x="56" y="240" width="40" height="42" fill="none"/>
+          <g class="dg-t hand muted"><text x="48" y="29" text-anchor="end">0</text><text x="48" y="41" text-anchor="end">2</text><text x="48" y="71" text-anchor="end">7</text><text x="48" y="191" text-anchor="end">27</text><text x="48" y="245" text-anchor="end">36</text><text x="48" y="287" text-anchor="end">43</text><text x="48" y="302" text-anchor="end">45 min</text></g>
+          <g class="dg-t hand">
+            <text x="108" y="34">frame</text>
+            <text x="108" y="56">orient</text>
+            <text x="108" y="120">walkthrough on their screen</text>
+            <text x="108" y="208">rank, quantify</text>
+            <text x="108" y="256">magic wand → straw-man</text>
+            <text x="108" y="292">wrap</text>
+          </g>
+          <g class="dg-t hand muted">
+            <text x="108" y="138">pain at every step, asked every time</text>
+            <text x="108" y="226">"how long does it feel like it takes?"</text>
+            <text x="108" y="274">not-a-promise · a person decides</text>
+            <text x="144" y="292">· protected</text>
+          </g>
+          <circle class="dg-gate" cx="96" cy="261" r="5.5"/>
+          <path class="dg-dash" d="M30 118C8 110 8 76 28 68" marker-end="url(#ah-tb)"/>
+          <defs><marker id="ah-tb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M2 1.5L8 5L2 8.5" fill="none" stroke="var(--ink-2)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+          <path class="dg-hair" d="M56 322h280"/>
+          <text class="dg-t hand" x="56" y="346">v1 → v2</text>
+          <g class="dg-t hand muted">
+            <text x="56" y="368">screen share moved up, from minute 16 to minute 5</text>
+            <text x="56" y="388">"how long does it feel like" added after a dead stop</text>
+            <text x="56" y="408">wrap protected: the first run ended mid-sentence</text>
+          </g>
+        </svg>
+        <figcaption>Forty-five minutes, one workflow per pass. The straw-man at minute 36 is the most productive four minutes in the guide.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 06 · the first version. Hidden Oct 3: it repeated the home page; its idea now lives as the quote on About. Remove `hidden` to restore. -->
+  <section class="wrap sec" id="first-version" hidden>
+    <header class="sec-head left rv"><span class="wm" aria-hidden="true">Solo</span><span class="kick">06 · the improvement loop, in practice</span><h2>I build the first version myself</h2></header>
+    <div class="cols-2">
+      <div class="rv" style="--i:1">
+        <p>I run intake for AI requests across 23 practices, functions, and institutes. I couldn't be the domain expert in every room, but I could make the discovery method repeatable. Building the first version was how I turned that limitation into something the whole team could use.</p>
+        <p>I recorded the calls, fed the transcripts into a skill I wrote, and added timestamped screenshots so the tool could see what the person was pointing at. Out came a story with requirements and a verdict: a POC I could build, or this needs engineering, or this is build versus buy.</p>
+        <p>The acceptance test was engineering. <strong>If I hand this off and an engineer can't create a POC, the skill isn't working.</strong> I refined it over one to two months as I did more intake. Now one intake can produce a working POC a week later.</p>
+      </div>
+      <div class="rv" style="--i:2">
+        <blockquote>To be fluent in AI you have to use AI, not only learn how to build with it. This was the first big agentic workflow I built, and you can build and learn these things quickly.<cite>From a recorded session, Aug 2026</cite></blockquote>
+        <p class="small">The first model was wrong, then the output was so technical I couldn't read it. I loved that feedback because it made the next decision obvious: use an output register a PM can follow and an engineer can still build from. Honing the skill became the third loop applied to the tool itself.</p>
+        <p class="small">Where I draw the line: skills, not agents, wherever a person still has to decide. An agent runs the task all the way through. A skill stops and asks.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · spinning out. Hidden Oct 3: too much to scan on a first visit; interview material. Remove `hidden` to restore. -->
+  <section class="wrap sec" id="spin" hidden>
+    <header class="sec-head left has-fig tight rv">
+      <div><span class="kick">07</span><h2>What keeps a loop from just spinning</h2></div>
+      <figure class="spin-fig" data-anim>
+        <svg viewBox="36 -4 228 228" role="img" aria-labelledby="dg-spin-title" data-trace="11">
+          <title id="dg-spin-title">The loop glyph turning slowly on itself while the orange dot traces it: a loop with no baseline just spins.</title>
+          <g class="loop-spin" style="animation-duration:20s">
+            <path class="loop-base" d="M150 110c-30-60-90-60-105-25s20 70 60 45c40-25 40-95 10-105s-45 30-25 60c25 40 95 40 105 5s-30-45-60-25c-40 25-40 95-10 105s45-30 25-60"/>
+            <circle class="dg-gate trace-dot" cx="150" cy="110" r="5.5"/>
+          </g>
+        </svg>
+      </figure>
+    </header>
+    <div class="cols">
+      <div class="rv" style="--i:1"><h3>Hold one version long enough to learn</h3><p class="small">When every test changes at once, feedback becomes impossible to compare. Set a clear bar, keep one version in front of people long enough to collect patterns, then change one thing at a time. <strong>That makes the learning cumulative instead of anecdotal.</strong></p></div>
+      <div class="rv" style="--i:2"><h3>Make the rule usable</h3><p class="small">A good rule tells a team what to do next: authorize the test, not the conclusion; usefulness is not proof of adoption; name the evidence and the person who checks it. Those rules turn governance from a deck into a decision a team can use.</p></div>
+      <div class="rv" style="--i:3"><h3>Use a small test to settle a big question</h3><p class="small">When a team disagrees, make the smallest reversible test that could change the decision. Compare it with the current way of working, write down what would count as a signal, and let the result—not the loudest opinion—decide the next move.</p></div>
+    </div>
+    <p class="lede rv" style="--i:4"><strong>Every loop needs a named person who can question the output and own the next decision.</strong> Otherwise, it is motion without learning.</p>
+  </section>
+
+  <!-- 08 · taste and craft -->
+  <section class="wrap sec" id="taste-craft" hidden>
+    <header class="sec-head left rv"><span class="wm" aria-hidden="true">Taste</span><span class="kick">08</span><h2>Taste and craft, honestly</h2></header>
+    <div class="cols-2">
+      <figure class="diagram marks rv" style="--i:1" data-anim><span class="x"></span>
+        <svg viewBox="0 0 520 400" role="img" aria-labelledby="dg-tc-title">
+          <title id="dg-tc-title">A hand-drawn chart. Judgment on the vertical axis, hands on the horizontal. A grey dot marks May 2026; an orange dot travels the dashed path from there toward the top right, where I sit in September 2026: high judgment, hands catching up on purpose.</title>
+          <path class="dg-arrow soft" d="M70 350h420l-8-5M70 350V30l-5 8"/>
+          <path class="dg-dash" d="M280 30v320M70 190h420"/>
+          <text class="dg-t hand muted" x="18" y="40">a lot</text><text class="dg-t hand muted" x="12" y="344">a little</text>
+          <text class="dg-t hand muted" x="76" y="372">a little</text><text class="dg-t hand muted" x="458" y="372">a lot</text>
+          <text class="dg-t hand big" x="28" y="200" transform="rotate(-90 28 200)" text-anchor="middle">judgment: what good looks like</text>
+          <text class="dg-t hand big" x="280" y="394" text-anchor="middle">hands: getting it built</text>
+          <g class="dg-t hand muted"><text x="90" y="60">judgment, few hands</text><text x="90" y="78">AI drafts; you decide</text><text x="300" y="60">judgment and hands</text><text x="300" y="78">AI amplifies</text><text x="90" y="216">neither yet</text><text x="90" y="234">AI replaces; nobody checks</text><text x="300" y="216">hands, thin judgment</text><text x="300" y="234">AI coaches</text></g>
+          <path class="dg-dash" d="M150 96c40 0 70-10 110-22"/>
+          <circle class="dg-dot" cx="150" cy="96" r="5"/><text class="dg-t hand" x="120" y="120">May 2026</text>
+          <circle class="dg-gate-soft" cx="262" cy="74" r="14"/>
+          <circle class="dg-gate a a-travel-hold" r="7" style="--path:path('M150 96c40 0 70-10 110-22');--dur:6s"/>
+          <text class="dg-t hand" x="205" y="142">Sep 2026 · me</text>
+          <text class="dg-t hand muted" x="205" y="160">18 years of judgment;</text><text class="dg-t hand muted" x="205" y="176">hands catching up on purpose</text>
+        </svg>
+        <figcaption>Two axes I think about a lot: the ability to judge what's good, and the ability to build it. The framing is Ravi Mehta's; the placement and the dates are mine.</figcaption>
+      </figure>
+      <div class="rv" style="--i:2">
+        <p>I'll say this plainly: I ship skills, prototypes, MCP servers, and the requirements engineers build from. I don't write production services, yet. Eighteen years in design and product gave me the judgment side of that chart. The hands side I've been building since May, on purpose, one pull request at a time.</p>
+        <p>What I don't like about using AI is that it removes the friction, and I don't learn without a challenge. So I keep the friction I can afford: plan mode first, because planning is where the human in the loop matters most. I ask AI where the gaps are; I don't hand it the wheel.</p>
+        <p>The research has a clean vocabulary for the split: <em class="ac">frame</em> the task, <em class="ac">judge</em> the output, <em class="ac">steer</em> the model. Most of what I bring is the first two. The third is what I've been building. If you want to see me struggle, I'll show you. That offer is real; it's also how I run enablement.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 · what I ask for. Hidden Oct 3: interview material. Remove `hidden` to restore. -->
+  <section class="wrap sec" id="ask" hidden>
+    <header class="sec-head left rv"><span class="kick">09</span><h2>What I ask a team for</h2></header>
+    <figure class="diagram wide rv" style="--i:1">
+      <svg viewBox="0 0 740 156" role="img" aria-labelledby="dg-ask-title" data-trace="14">
+        <title id="dg-ask-title">Five sketched icons on one thread: a recording button for a recorded working session, a clock for skin in the game, a person inside a loop for one person who can say yes, a flag on a line for what good looks like, and a signed name tag for a named owner at the end. The orange dot travels the thread; the two human asks are highlighted.</title>
+        <circle class="dg-gate-soft" cx="370" cy="54" r="34"/><circle class="dg-gate-soft" cx="650" cy="54" r="34"/>
+        <path class="loop-base" d="M20 98H720"/>
+        <circle class="dg-gate trace-dot" cx="20" cy="98" r="5.5"/>
+        <g transform="translate(90 54)"><circle r="16" class="dg-line"/><circle r="5.5" fill="var(--accent)"/></g>
+        <g transform="translate(230 54)" class="dg-line"><circle r="16"/><path d="M0-9v9l6 4"/><path d="M-5-15h10"/></g>
+        <g transform="translate(370 54)"><circle r="14" class="dg-line"/><circle cy="-4" r="3.2" fill="var(--accent)"/><path d="M-6.5 8c0-4.6 2.9-7.2 6.5-7.2S6.5 3.4 6.5 8" fill="none" stroke="var(--accent)" stroke-width="1.6"/><path class="dg-arrow" d="M16 10l4 4 7-8"/></g>
+        <g transform="translate(510 54)" class="dg-line"><path d="M-18 14h36"/><path d="M-6 14V-14"/><path d="M-6-14l20 6-20 6"/></g>
+        <g transform="translate(650 54)" class="dg-line"><rect x="-20" y="-12" width="40" height="26" rx="3"/><path d="M-13 6c4-6 7 4 11-2s6 4 10-3"/><circle cx="0" cy="-12" r="2.2" fill="var(--accent)" stroke="none"/></g>
+        <g class="dg-t hand">
+          <text x="90" y="124" text-anchor="middle">a recorded</text><text x="90" y="142" text-anchor="middle">working session</text>
+          <text x="230" y="124" text-anchor="middle">skin in</text><text x="230" y="142" text-anchor="middle">the game</text>
+          <text x="370" y="124" text-anchor="middle">one person who</text><text x="370" y="142" text-anchor="middle">can say yes</text>
+          <text x="510" y="124" text-anchor="middle">what good</text><text x="510" y="142" text-anchor="middle">looks like</text>
+          <text x="650" y="124" text-anchor="middle">a named owner</text><text x="650" y="142" text-anchor="middle">at the end</text>
+        </g>
+      </svg>
+      <figcaption>Five asks. Two of them are people: one who can say yes, and one who owns it after.</figcaption>
+    </figure>
+    <div class="rail rv" style="--i:2">
+      <div class="step"><b>A recorded working session</b>A real, recent example open, everyone signed in.</div>
+      <div class="step"><b>Skin in the game</b>Time in. One-off meetings don't get anything built.</div>
+      <div class="step gate"><b>One person who can say yes</b>Accountable for the outcome and the metric it turns into.</div>
+      <div class="step"><b>What good looks like</b>Even a rough one. I won't build toward a bar nobody has stated.</div>
+      <div class="step gate"><b>A named owner at the end</b>We co-build it, then hand it off, and you own it.</div>
+    </div>
+    <p class="rv" style="--i:2">In return: a first version within a week, a decision log the team can audit, thresholds that fit the workflow, and a capability the team is ready to keep improving without me.</p>
+  </section>
+
+  <!-- 10 · papers. Hidden Oct 3: no visible content while the Research page is hidden. Remove `hidden` on both when research.html returns. -->
+  <section class="wrap sec" id="papers" hidden>
+    <header class="sec-head left rv"><span class="kick">10</span><h2>What I read to name this</h2></header>
+    <!-- Research page hidden from nav until updated; restore link when research.html is live. -->
+    <p class="rv" style="--i:1" hidden>The vocabulary here (frame, judge, steer; oversight as a budget; the generate-evaluate-revise loop) comes from the research. It guided the design; it isn't the proof. The papers, mapped to each piece of work, are on the <a class="link" href="research.html">Research</a> page.</p>
+  </section>
+
+  <!-- Contact — the same block on every landing page (home, about, work, approach, writing, research). Edit it here and copy it everywhere. -->
+  <section class="wrap close" id="contact">
+    <span class="wm" aria-hidden="true">Get in touch</span>
+    <div class="cols">
+      <div class="rv" style="--i:0">
+        <p class="field"><span class="lbl">Where</span></p>
+        <p class="small">Christine Nguyen · Austin, Texas.<br>Open to Head of AI Enablement, Director of AI Transformation, and AI adoption leadership. Don't let the titles lock you in: if the work matches my skills, I'm open to it.</p>
+      </div>
+      <div class="rv" style="--i:1">
+        <h2>If you've read this far, we should probably talk.</h2>
+        <p class="small" style="margin-top:.45rem">Bring me the AI problem your team is still trying to explain.</p>
+        <a class="email" href="mailto:christineqnguyen@gmail.com" data-copy-email="christineqnguyen@gmail.com">christineqnguyen@gmail.com</a>
+        <p class="small" style="margin-top:.5rem">Click to copy.</p>
+      </div>
+      <div class="stack marks rv" style="--i:2"><span class="x"></span>
+        <div><p class="field">Email</p><a class="box" href="mailto:christineqnguyen@gmail.com" style="display:block">christineqnguyen@gmail.com</a></div>
+        <div><p class="field">LinkedIn</p><a class="btn wide" href="https://www.linkedin.com/in/christinenguyen7/">Open LinkedIn</a></div>
+        <div><p class="field">Résumé</p><span class="btn wide ghost soon" aria-disabled="true">Coming soon</span></div>
+        <div><p class="field">Open source</p><a class="btn wide ghost" href="https://github.com/christine-q-nguyen" rel="me">GitHub</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="band"><span class="ac">christine</span><span class="dot">.</span>nguyen <span class="lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span> (Austin · a work in progress, 2008 – present)</footer>
+<script src="assets/js/site.js?v=20261006d" defer></script>
+</body>
+</html>
