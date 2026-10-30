@@ -5,7 +5,14 @@
    Type: Bricolage Grotesque (display) · Inter (UI/body) · Instrument Serif italic (accents, watermarks) · Gochi Hand (diagram annotations only).
    Spec: ../../DESIGN_SYSTEM.md */
 
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Gochi+Hand&display=swap');
+/* Fonts are self-hosted: the Latin subsets Google Fonts serves, unchanged (SIL Open Font License, assets/fonts/OFL.txt).
+   No third-party request, and every page preloads the three faces the first screen uses. */
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:300 800;font-display:swap;src:url(../fonts/bricolage-grotesque-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400 600;font-display:swap;src:url(../fonts/inter-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Inter";font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/inter-italic-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Instrument Serif";font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/instrument-serif-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Instrument Serif";font-style:italic;font-weight:400;font-display:swap;src:url(../fonts/instrument-serif-italic-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Gochi Hand";font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/gochi-hand-latin.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 
 /* ---------- tokens ---------- */
 :root{
@@ -21,6 +28,10 @@
   --hand:"Gochi Hand","Bradley Hand","Comic Sans MS",cursive;
   --ease:cubic-bezier(.2,.7,.2,1);
   --nav-h:64px;
+  /* One dial for every decorative motion (loops, traces, runners, diagram animations, icons, the portrait); 2 = half the original speed. site.js reads it too. Hover feedback and scroll reveals are left at their speed. */
+  --slow:2;
+  /* the soft patch of page colour behind text and art that fades the grid lines out where they cross it */
+  --knock:0 0 10px 4px var(--bg);
 }
 
 /* ---------- base ---------- */
@@ -29,12 +40,12 @@
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.55;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
 
-/* ---------- paper: a crumpled sheet multiplied over the whole page (creases + grain), drawn by SVG filters, no image file. Part of the sketch layer: off with ?sketch=0 ---------- */
-.sketch body::before{content:"";position:fixed;inset:0;z-index:30;pointer-events:none;mix-blend-mode:multiply;opacity:.36;
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1100'><filter id='c' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.0105' numOctaves='5' seed='9' stitchTiles='stitch'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='3.6'><feDistantLight azimuth='235' elevation='68'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='1.08'/><feFuncG type='linear' slope='1.08'/><feFuncB type='linear' slope='1.08'/></feComponentTransfer></filter><rect width='1100' height='1100' filter='url(%23c)'/></svg>"),
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='g' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' seed='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .55  0 0 0 0 .55  0 0 0 0 .55  0 0 0 .22 0'/></filter><rect width='240' height='240' filter='url(%23g)'/></svg>");
-  background-size:1100px 1100px,240px 240px}
+/* ---------- paper: a crumpled sheet laid over the whole page (creases). It used to be drawn at load by SVG filters and multiplied in;
+   now it is one pre-rendered tile of black at the equivalent alpha (tools/paper.html → tools/paper.py), so it looks the same and
+   costs the browser nothing to draw. Part of the sketch layer: off with ?sketch=0 ---------- */
+.sketch body::before{content:"";position:fixed;inset:0;z-index:30;pointer-events:none}
+/* the tile is fetched after the page has loaded (site.js adds .paper), so it never competes with the fonts */
+.sketch.paper body::before{background:url(../img/paper.webp) 0 0/1100px 1100px}
 a{color:inherit;text-decoration:none}
 a:hover{opacity:.72;transition:opacity .2s ease}
 ::selection{background:var(--ink);color:var(--bg)}
@@ -53,10 +64,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .grid-lines i:nth-child(2){left:calc(var(--gutter) + 2*(100% - 2*var(--gutter))/3)}
 @media (max-width:640px){.grid-lines i:nth-child(1){left:50%}.grid-lines i:nth-child(2){display:none}}
 /* runners: orange dots that travel the grid lines at their own speed and direction, each with a fading trace (injected by site.js) */
-.grid-lines .run{position:absolute;top:0;width:1px;height:120px;margin-left:0;transform:translateY(-130%);background:linear-gradient(to bottom,transparent,var(--trace));animation:run var(--dur,30s) linear var(--delay,0s) infinite;will-change:transform}
+.grid-lines .run{position:absolute;top:0;width:1px;height:120px;margin-left:0;transform:translateY(-130%);background:linear-gradient(to bottom,transparent,var(--trace));animation:run var(--dur,calc(30s*var(--slow))) linear var(--delay,0s) infinite;will-change:transform}
 .grid-lines .run::after{content:"";position:absolute;left:50%;bottom:-2px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--accent)}
-.grid-lines .run{transition:opacity .5s ease}
-.grid-lines .run.fade{opacity:.18}
 .grid-lines .run.up{background:linear-gradient(to top,transparent,var(--trace));animation-direction:reverse}
 .grid-lines .run.up::after{bottom:auto;top:-2px}
 .grid-lines .run[data-line="0"]{left:var(--gutter)}
@@ -68,6 +77,15 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .wrap{position:relative;z-index:1;max-width:var(--w);margin:0 auto;padding:0 var(--gutter)}
 .rule{height:1px;background:var(--line);border:0}
 .rule.full{position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;width:100vw}
+/* The grid lines, and the dots that run on them, fade out behind words and pictures and stay crisp in the gutters:
+   each block of text or art carries a soft-edged patch of page colour. The paper overlay sits above, so the patch never shows.
+   Section heads hug their text so the patch doesn't blank the whole row; the watermark is painted above the patch.
+   Tile art and diagram boxes hide the lines with their own solid background; open figures (the loops, the portrait) get the patch. */
+.sec-head:not(.has-fig){width:fit-content;margin-left:auto;margin-right:auto}
+.sec-head.left:not(.has-fig){margin-left:0}
+.hello{width:fit-content}
+.sec-head:not(.has-fig),.hero-text>*,.hero-loop,.maker-label,.ethos li,.loops>*,.pull-quote,.caps-intro,.sec-intro,.caps,.caps+.small,.tile>:not(.art),.approach-top>.lede,.rail,
+.cols>*,.cols-2>*,.page-head>:not(.wm),.body>*,.case-head>*,.next,.rows,.wrap>.stats{background-color:var(--bg);box-shadow:var(--knock)}
 
 /* ---------- labels: (brackets) and +tags ---------- */
 .lbl{font-family:var(--sans);font-size:14px;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
@@ -84,7 +102,7 @@ em.ac,.ac{font-family:var(--serif);font-style:italic;font-weight:400;letter-spac
 .brand{font-family:var(--display);font-size:17.5px;letter-spacing:-.04em;font-weight:500;justify-self:start;display:inline-flex;align-items:center}
 .brand .ac{font-size:1.03em}
 .brand .dot,.band .dot{color:var(--accent);font-weight:700}
-.brand-loop{margin-left:.48rem;width:1.35em;height:1.35em;animation:spin 18s linear infinite}
+.brand-loop{margin-left:.48rem;width:1.35em;height:1.35em;animation:spin calc(18s*var(--slow)) linear infinite}
 .brand-loop svg{width:100%;height:100%;overflow:visible}
 /* the loop glyph as a small mark: status pill, footer band */
 .lg{display:inline-block;width:1.15em;height:1.15em;vertical-align:-.22em}
@@ -101,10 +119,7 @@ em.ac,.ac{font-family:var(--serif);font-style:italic;font-weight:400;letter-spac
 .pill .txt{align-self:flex-start;margin-top:.57rem}
 /* a tiny shop sign: it flickers to life, then holds a warm orange neon glow. */
 .open-sign{position:relative;flex:none;width:2.5rem;height:1.65rem;transform-origin:50% 0}
-.open-sign::before,.open-sign::after{content:"";position:absolute;top:.05rem;width:1px;height:.52rem;background:var(--ink-2);transform-origin:top}
-.open-sign::before{left:.62rem;transform:rotate(12deg)}
-.open-sign::after{right:.62rem;transform:rotate(-12deg)}
-.open-sign span{position:absolute;left:.12rem;right:.12rem;top:.48rem;height:1.05rem;display:grid;place-items:center;border:1px solid var(--accent);background:rgba(241,241,241,.92);font-family:var(--display);font-size:8px;font-weight:700;line-height:1;letter-spacing:.12em;color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.4),0 0 8px rgba(212,80,30,.2),inset 0 -1px rgba(212,80,30,.18);animation:open-neon 7.4s steps(1,end) infinite}
+.open-sign span{position:absolute;left:.12rem;right:.12rem;top:.48rem;height:1.05rem;display:grid;place-items:center;border:1px solid var(--accent);background:rgba(241,241,241,.92);font-family:var(--display);font-size:8px;font-weight:700;line-height:1;letter-spacing:.12em;color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.4),0 0 8px rgba(212,80,30,.2),inset 0 -1px rgba(212,80,30,.18);animation:open-neon calc(7.4s*var(--slow)) steps(1,end) infinite}
 @keyframes open-neon{
   0%,3%,8%,12%{color:var(--ink-2);border-color:var(--line-2);box-shadow:inset 0 -1px rgba(0,0,0,.08)}
   5%,10%{color:var(--accent);border-color:var(--accent);box-shadow:0 0 3px rgba(212,80,30,.35),0 0 8px rgba(212,80,30,.18),inset 0 -1px rgba(212,80,30,.18)}
@@ -119,35 +134,114 @@ em.ac,.ac{font-family:var(--serif);font-style:italic;font-weight:400;letter-spac
   :root{--nav-h:92px}
 }
 
-/* ---------- hero: fills the first screen. lockup → tags → (intro · glyph · where), staggered, all above the fold ---------- */
-.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;padding-top:calc(var(--nav-h) + clamp(1.25rem,3.5vh,3rem));padding-bottom:clamp(1rem,3vh,2rem)}
+/* ---------- hero: what I do (the statement, the loop beside it), then how I work as one sentence the four words complete. On screen in the first frame: no reveal. ---------- */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:clamp(1.6rem,4vh,3rem);padding-top:calc(var(--nav-h) + clamp(1.5rem,5vh,4rem));padding-bottom:clamp(2.5rem,7vh,5rem)}
+/* the loop sits centred in the grid's right third, clear of the lines on either side, and well under the statement's height */
+.hero-top{position:relative}
+.hero-text{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(1.1rem,2.6vh,2rem)}
+.hero-loop{position:absolute;left:calc(100%*5/6);top:50%;width:clamp(96px,9.5vw,140px);margin:0;transform:translate(-50%,-50%)}
+.hero-loop svg{width:100%;height:auto;overflow:visible}
+.hero-loop .loop-base{stroke:var(--stroke)}
+.hello{max-width:none;font-family:var(--display);font-weight:500;font-size:clamp(1.05rem,1.5vw,1.3rem);letter-spacing:-.035em;color:var(--ink);font-variation-settings:"opsz" 24}
+.hello .dot{color:var(--accent);font-weight:700}
+.statement{font-family:var(--display);font-weight:500;font-size:clamp(2.5rem,5.8vw,5.4rem);line-height:.98;letter-spacing:-.062em;max-width:17ch;color:var(--ink);font-variation-settings:"opsz" 96;text-wrap:balance}
+.statement .ac{font-size:1.06em;letter-spacing:-.035em;line-height:.9}
+/* the tight tracking pinches hyphens between their letters, so a hyphen gets its own room (and the word stays on one line) */
+.statement .nb{white-space:nowrap}
+.statement .hy{margin:0 .06em}
+/* the same squeeze hits periods and decimal points in the big type ("2.5" read as "25"); tools/headline-periods.py wraps them */
+.pd{margin:0 .16em 0 .07em}
+.dp{margin:0 .06em}
+.hero-lede{max-width:44ch}
+/* "I make it:" is the lead-in and each word completes it, so "make it" is said once. The lead-in is set like About's rail
+   labels; each word gets a small drawing in the About icons' style, always beside its word. */
+.maker{display:grid;grid-template-columns:minmax(8.5rem,1fr) minmax(0,4fr);gap:1.4rem clamp(1rem,2.4vw,2rem);align-items:start}
+.maker-label{max-width:none;border-top:1px solid var(--line-2);padding-top:.8rem;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.02;letter-spacing:-.02em;color:var(--ink)}
+.ethos{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.4rem clamp(1rem,2.4vw,2rem);max-width:none}
+.ethos li{border-top:1px solid var(--line-2);padding-top:.8rem}
+.ethos-ic{display:block;width:56px;height:auto;margin:0 0 .4rem -4px;overflow:visible}
+/* Each drawing acts out its word on one shared loop: left to right, one at a time, then a rest before the next round, and only
+   while the row is on screen (site.js adds .play). Frame 0 is the finished drawing, which is what reduced motion and no-JS show. */
+.ethos-ic .icon-solid{fill:var(--bg);stroke:var(--ink);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+.ethos-ic .motion{transform-box:view-box;animation-duration:calc(10s*var(--slow));animation-delay:calc((.6s + var(--n,0)*2.2s)*var(--slow));animation-iteration-count:infinite;animation-timing-function:var(--ease)}
+/* clear: clouds drift over the sun, then part */
+.ethos-ic .cloud{opacity:.35;animation-name:cloud-pass}
+@keyframes cloud-pass{0%,16%,100%{transform:none;opacity:.35}5%,9%{transform:translate(var(--fx),var(--fy));opacity:1}}
+.ethos-ic .sun-rays{transform-origin:30px 24px;animation-name:rays-hide}
+@keyframes rays-hide{0%,16%,100%{transform:none;opacity:1}4%,10%{transform:scale(.65) rotate(-20deg);opacity:0}}
+.ethos-ic .sun{transform-origin:30px 24px;animation-name:sun-glow}
+@keyframes sun-glow{0%,17%,100%{transform:none}5%,10%{transform:scale(.85)}14.5%{transform:scale(1.1)}}
+/* real: bricks snap onto the base, the orange one last */
+.ethos-ic .brick-mid{animation-name:brick-mid}
+@keyframes brick-mid{0%,12%,100%{transform:none;opacity:1}2%{transform:translateY(-3px);opacity:0}5%{transform:translateY(-10px);opacity:0}9%{transform:none;opacity:1}10.5%{transform:translateY(-1px)}}
+.ethos-ic .brick-top{fill:var(--accent);animation-name:brick-top}
+@keyframes brick-top{0%,16%,100%{transform:none;opacity:1}2%{transform:translateY(-3px);opacity:0}9%{transform:translateY(-12px);opacity:0}13%{transform:none;opacity:1}14.5%{transform:translateY(-1.2px)}}
+/* safe: the work goes to the agent and comes back to a person, who signs off */
+.ethos-ic .hand-off,.ethos-ic .hand-back,.ethos-ic .sign-off{fill:none;stroke:var(--accent);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.ethos-ic .hand-off,.ethos-ic .hand-back{stroke-dasharray:1 1;stroke-dashoffset:1}
+.ethos-ic .hand-off{animation-name:hand-off}
+@keyframes hand-off{0%,1%{stroke-dashoffset:1;opacity:0}1.5%{stroke-dashoffset:.97;opacity:1}6%{stroke-dashoffset:0;opacity:1}8.5%,100%{stroke-dashoffset:0;opacity:0}}
+.ethos-ic .bot{animation-name:bot-ping}
+@keyframes bot-ping{0%,6%,9%,100%{transform:none}7.2%{transform:translateY(-1.4px)}}
+.ethos-ic .hand-back{animation-name:hand-back}
+@keyframes hand-back{0%,9%{stroke-dashoffset:1;opacity:0}9.5%{stroke-dashoffset:.97;opacity:1}14%{stroke-dashoffset:0;opacity:1}16.5%,100%{stroke-dashoffset:0;opacity:0}}
+.ethos-ic .person{animation-name:nod}
+@keyframes nod{0%,14%,17.5%,100%{transform:none}15%{transform:translateY(1.2px)}16.2%{transform:translateY(-.3px)}}
+.ethos-ic .sign-off{animation-name:sign-off}
+@keyframes sign-off{0%,14.5%{opacity:0;transform:translateY(1px)}15.5%,18.5%{opacity:1;transform:none}20%,100%{opacity:0;transform:none}}
+/* stick: the team keeps building the tower from "real": one lifts a brick to the top, the other stacks one on it, and the newest brick is the orange one */
+.ethos-ic .brick-a,.ethos-ic .brick-b{stroke-width:1.25;stroke-linejoin:round}
+.ethos-ic .brick-a{fill:var(--bg);stroke:var(--ink);animation-name:brick-a}
+.ethos-ic .brick-b{fill:var(--accent);stroke:var(--accent);animation-name:brick-b}
+@keyframes brick-a{
+  0%,100%{transform:none;opacity:1;fill:var(--bg);stroke:var(--ink)}
+  1.5%{transform:none;opacity:0;fill:var(--bg);stroke:var(--ink)}
+  1.6%{transform:translate(-22px,-1px);opacity:0;fill:var(--accent);stroke:var(--accent)}
+  4%{transform:translate(-22px,-1px);opacity:1}
+  6%{transform:translate(-22px,-6px)}
+  11%{transform:translate(0,-7px)}
+  13%{transform:none}
+  13.7%{transform:translateY(-1px)}
+  14.5%,21%{transform:none;fill:var(--accent);stroke:var(--accent)}
+  23%{fill:var(--bg);stroke:var(--ink)}
+}
+@keyframes brick-b{
+  0%,100%{transform:none;opacity:1;fill:var(--accent);stroke:var(--accent)}
+  1.5%{transform:none;opacity:0;fill:var(--accent);stroke:var(--accent)}
+  1.6%,13%{transform:translate(22px,4px);opacity:0;fill:var(--bg);stroke:var(--ink)}
+  15%{transform:translate(22px,4px);opacity:1}
+  17%{transform:translate(22px,-1px)}
+  19.5%{transform:translate(0,-5px)}
+  20.5%{transform:none}
+  21%{transform:translateY(-.8px)}
+  21.5%{transform:none;fill:var(--bg);stroke:var(--ink)}
+  23%{fill:var(--accent);stroke:var(--accent)}
+}
+.ethos b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(1.5rem,2.6vw,2.3rem);letter-spacing:-.05em;line-height:1;color:var(--ink);font-variation-settings:"opsz" 48}
+.ethos span{display:block;margin-top:.45rem;font-size:14.5px;line-height:1.42;letter-spacing:-.012em;color:var(--ink-2);max-width:26ch}
+@media (max-width:900px){.maker{grid-template-columns:1fr}.maker-label{border-top:0;padding-top:0}.ethos{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.hero{min-height:0;justify-content:flex-start;padding-top:calc(var(--nav-h) + 2rem)}.hero-loop{position:static;transform:none;width:100px;margin:clamp(1.2rem,3vh,2rem) 0 0 calc(100%/6 - 50px)}}
+@media (max-width:640px){.hero-loop{margin-left:calc(25% - 50px)}}
+@media (max-width:480px){.ethos{grid-template-columns:1fr}}
+/* the name lockup, kept for the Open Graph card */
 .lockup{font-family:var(--display);font-weight:400;font-size:clamp(3.2rem,10.6vw,10.9rem);line-height:.9;letter-spacing:-.065em;display:flex;flex-wrap:wrap;align-items:baseline;font-variation-settings:"opsz" 96;color:var(--ink)}
-@media (max-width:760px){.lockup{font-size:clamp(3.2rem,15vw,7rem)}}
 .lockup .first{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.05em;font-size:1.02em}
 .lockup .dot{font-weight:700;letter-spacing:0;margin:0 .035em 0 .015em;color:var(--accent)}
 .lockup .last{letter-spacing:-.075em}
-.hero .tags{margin-top:clamp(1rem,2.5vh,2rem);display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.hero .below{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:clamp(1rem,3vh,2.5rem);align-items:center;min-height:0}
-.hero .intro{font-size:15.5px;line-height:1.45;letter-spacing:-.015em;max-width:30ch;align-self:start;margin-top:clamp(0px,2vh,1.25rem)}
-/* the 7-second read: role line + three results */
-.hero .intro .role{font-size:clamp(1rem,1.25vw,1.18rem);line-height:1.38;letter-spacing:-.022em;color:var(--ink);max-width:28ch}
-/* The four "Make it…" lines share one label column (subgrid), so the descriptions line up instead of zigzagging. */
-.proof{list-style:none;margin-top:1.1rem;display:grid;grid-template-columns:max-content 1fr;column-gap:.8rem;row-gap:0;max-width:32ch}
-.proof li{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:baseline;font-size:13.5px;line-height:1.3;color:var(--ink-2);border-top:1px solid var(--line);padding:.5rem 0 .4rem}
-@supports not (grid-template-columns:subgrid){.proof li{grid-template-columns:7.2rem 1fr;column-gap:.8rem}}
-.proof li:last-child{border-bottom:1px solid var(--line)}
-.proof b{font-family:var(--display);font-weight:600;font-size:1.2rem;letter-spacing:-.045em;color:var(--ink);white-space:nowrap;font-variation-settings:"opsz" 48}
-.proof b i{font-style:normal;color:var(--accent);font-weight:400;margin:0 .1em}
-/* The where-line sits two lines higher than the bottom of the column, so it no longer floats under a large gap. */
-.hero .where{font-size:15.5px;line-height:1.45;letter-spacing:-.015em;text-align:right;max-width:28ch;justify-self:end;align-self:end;margin-bottom:clamp(3rem,12vh,7.5rem)}
-.hero .glyph{justify-self:center;align-self:center;width:min(440px,56vh)}
-.hero .glyph svg{width:100%;height:auto;overflow:visible}
-@media (max-width:760px){
-  .hero{min-height:0;padding-top:calc(var(--nav-h) + 2rem)}
-  .hero .tags,.hero .below{grid-template-columns:1fr}
-  .hero .where{text-align:left;justify-self:start;margin-bottom:0}
-  .hero .glyph{justify-self:start;width:min(100%,300px);order:3;margin:1rem 0}
-}
+
+/* ---------- "Get us all loopy": the three loops beside the diagram that names them, then the one quote on its own ---------- */
+.loops{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(1.5rem,4vw,3.5rem);align-items:center}
+.loops .ul+p{margin-top:1.2rem}
+/* the question the section answers, in the display face; the answer's first sentence carries the weight */
+.hook{max-width:none;font-family:var(--display);font-weight:500;font-size:clamp(1.45rem,2.4vw,1.9rem);letter-spacing:-.045em;line-height:1.15;color:var(--ink);margin-bottom:.7rem;font-variation-settings:"opsz" 48}
+.loops .lede .hl{font-weight:500}
+.glyph{margin:0;justify-self:center;width:min(420px,100%)}
+.glyph svg{width:100%;height:auto;overflow:visible}
+@media (max-width:760px){.loops{grid-template-columns:1fr}.glyph{width:min(320px,100%);justify-self:start}}
+.pull{padding-top:clamp(.5rem,2vw,1.5rem);padding-bottom:clamp(4rem,9vw,7rem)}
+.pull-quote{margin:0 auto;padding:0;border:0;max-width:22ch;text-align:center;font-size:clamp(1.9rem,4vw,3.3rem);line-height:1.1;letter-spacing:-.025em}
+.pull-quote cite{margin-top:1.1rem;font-size:14px}
+.pull+.sec{border-top:1px solid var(--line)}
 
 /* ---------- sections ---------- */
 .sec{position:relative;padding-top:clamp(4rem,9vw,7.5rem);padding-bottom:clamp(4rem,9vw,7.5rem)}
@@ -245,6 +339,25 @@ a.cap:hover .go{font-family:var(--serif);font-style:italic;font-size:14.5px}
 .row .out b{display:inline;margin-right:.42em}
 .row .out>span{display:inline;max-width:none}
 .tile .sub{margin-top:.55rem}
+/* Every tile says it opens a page. On hover or keyboard focus the headline turns to its italic serif twin in place (no slide;
+   both copies share one grid cell, so the tile never reflows), "Read the case" and its arrow turn orange, and the art box
+   lifts with an orange edge. Reduced motion: no lift, no nudge. */
+.tile .go{display:inline-flex;align-items:baseline;gap:.4em;margin-top:1rem;font-size:14px;letter-spacing:-.01em;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:1px;transition:color .25s ease,border-color .25s ease}
+.tile .go .arr{display:inline-block;transition:transform .25s var(--ease)}
+.tile:is(:hover,:focus-visible) .go{color:var(--accent);border-color:var(--accent)}
+.tile:is(:hover,:focus-visible) .go .arr{transform:translateX(4px)}
+:is(#work,#open-source) .tile .out b{display:grid}
+:is(#work,#open-source) .tile .out b>span{grid-area:1/1;transition:opacity .2s ease}
+:is(#work,#open-source) .tile .out b>.alt{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.1em;line-height:1.08;letter-spacing:-.01em;opacity:0}
+:is(#work,#open-source) .tile:is(:hover,:focus-visible) .out b>.def{opacity:0}
+:is(#work,#open-source) .tile:is(:hover,:focus-visible) .out b>.alt{opacity:1}
+.tile .art{transition:transform .35s var(--ease),background .35s ease,border-color .35s ease}
+.tile:is(:hover,:focus-visible) .art{transform:translateY(-3px);border-color:var(--accent)}
+.tile:focus-visible{outline-offset:6px}
+@media (prefers-reduced-motion:reduce){
+  :is(#work,#open-source) .tile .out b>span{transition:none}
+  .tile:is(:hover,:focus-visible) .art,.tile:is(:hover,:focus-visible) .go .arr{transform:none}
+}
 .facts{display:grid;gap:.2rem;margin-top:.75rem;font-size:13.5px;line-height:1.4}
 .facts div{display:grid;grid-template-columns:4.8rem 1fr;gap:.6rem}
 .facts dt{color:var(--ink);font-weight:500}
@@ -329,10 +442,12 @@ td:first-child{color:var(--ink)}
 .btn.plain::before,.btn.plain::after{content:""}
 
 /* ---------- contact / close ---------- */
-.close{position:relative;padding-top:clamp(4rem,9vw,7rem);padding-bottom:clamp(3rem,6vw,5rem);border-top:1px solid var(--line);overflow:hidden}
-.close .wm{top:62%;font-size:clamp(4.5rem,15vw,12.5rem);white-space:nowrap}
+/* Get in touch opens like Approach: a left-aligned head over its watermark, then the three columns */
+.close{position:relative;padding-top:clamp(2rem,5vw,4rem);padding-bottom:clamp(3rem,6vw,5rem);border-top:1px solid var(--line);overflow:hidden}
+.close .wm{font-size:clamp(4.2rem,13vw,11.5rem)}
+.close .sec-head{padding-top:clamp(.5rem,2vw,1.5rem)}
+.close .sec-head h2{text-wrap:balance}
 .close .cols{position:relative;z-index:1;align-items:start}
-.close h2{font-family:var(--sans);font-weight:400;font-size:15.5px;letter-spacing:-.02em;line-height:1.45;color:var(--ink);max-width:22ch}
 .close .email{display:inline-block;margin-top:1rem;border-bottom:1px solid var(--ink);font-size:15.5px;letter-spacing:-.02em}
 .close .field{font-size:14px;color:var(--ink);margin-bottom:.4rem}
 .close .box{background:#fff;border:1px solid var(--line);min-height:40px;padding:.6rem .7rem;font-size:14px;color:var(--ink-2)}
@@ -377,7 +492,7 @@ td:first-child{color:var(--ink)}
 .flow li.person::before{content:"(" counter(step,decimal-leading-zero) " · a person decides)";color:var(--accent)}
 .flow li.person b::before{content:"";display:inline-block;width:.95em;height:.95em;vertical-align:-.12em;margin-right:.3em;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6.4' fill='none' stroke='%23181818' stroke-width='1.1'/><circle cx='8' cy='5.6' r='1.7' fill='%23d4501e'/><path d='M4.8 12c0-2.2 1.4-3.5 3.2-3.5s3.2 1.3 3.2 3.5' fill='none' stroke='%23d4501e' stroke-width='1.2'/></svg>") center/contain no-repeat}
 .flow li+li::after{content:"→";position:absolute;left:0;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;border:1px solid var(--line-2);background:#f6f6f6;display:grid;place-items:center;font-size:12px;line-height:1;color:var(--ink);z-index:1}
-.flow::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--accent);z-index:2;opacity:0;animation:flow-dot 9s var(--ease) infinite;animation-play-state:paused}
+.flow::before{content:"";position:absolute;top:-4.5px;left:0;width:8px;height:8px;margin-left:-4px;border-radius:50%;background:var(--accent);z-index:2;opacity:0;animation:flow-dot calc(9s*var(--slow)) var(--ease) infinite;animation-play-state:paused}
 .flow.play::before{animation-play-state:running}
 @keyframes flow-dot{0%{left:0;opacity:0}6%{opacity:1}40%{left:var(--at,50%)}72%{left:var(--at,50%)}94%{left:100%;opacity:1}100%{left:100%;opacity:0}}
 .flow+.small{margin-top:.2rem}
@@ -430,7 +545,7 @@ html,body{overflow-x:clip}
 .page-head h1 .ac{font-size:1.02em;letter-spacing:-.03em}
 .page-head .lede{margin-top:1.4rem}
 /* Page-head watermarks stay inside the clipped header so every letter shows ("About", not "Abou"). */
-.page-head .wm{left:auto;right:0;top:40%;transform:translate(0,-50%);font-size:clamp(4.2rem,12vw,11rem);max-width:100%}
+.page-head .wm{left:auto;right:calc(var(--gutter) + .1em);top:40%;transform:translate(0,-50%);font-size:clamp(4.2rem,12vw,11rem);max-width:100%}
 /* About: the portrait is pencil lifted off its paper (tools/portrait.py). site.js draws the line layer in, then the shading settles over it; the line layer only shows while that runs. */
 .page-head.has-portrait{display:grid;grid-template-columns:1fr auto;gap:clamp(1.5rem,4vw,4rem);align-items:end}
 .portrait{margin:0;width:clamp(190px,24vw,300px);position:relative;z-index:1}
@@ -440,8 +555,33 @@ html,body{overflow-x:clip}
 .portrait.drawing .portrait-lines{opacity:1}
 @media (max-width:760px){.page-head.has-portrait{grid-template-columns:1fr}.portrait{width:220px}}
 .body aside.ic::before,.body aside.ic::after{content:none}
-.body aside.ic span::before{content:"("}.body aside.ic span::after{content:")"}
+/* About's left rail: each section name set large in the italic serif, so the rail reads apart from the text beside it */
+.body aside.ic span{display:block;font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(1.55rem,2.3vw,2.05rem);line-height:1.05;letter-spacing:-.02em;color:var(--ink);max-width:9ch}
 .body aside.ic .ic{width:64px;height:52px;margin-bottom:.6rem;overflow:visible}
+/* Before AI: one row per role, oldest first, so the journey reads toward now */
+.timeline{list-style:none;max-width:none;border-top:1px solid var(--line)}
+.timeline li{display:grid;grid-template-columns:7.2rem minmax(0,1fr);column-gap:1.2rem;padding:.8rem 0 .85rem;border-bottom:1px solid var(--line)}
+.timeline .yr{grid-row:span 2;font-family:var(--display);font-weight:500;font-size:15px;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+.timeline b{font-weight:500;font-size:15.5px;letter-spacing:-.02em;color:var(--ink)}
+.timeline span:not(.yr){margin-top:.15rem;font-size:14.5px;line-height:1.45;color:var(--ink-2)}
+@media (max-width:640px){.timeline li{grid-template-columns:1fr}.timeline .yr{grid-row:auto;margin-bottom:.1rem}}
+/* What I'm good at: one line on what I enjoy, the job in one sentence, the four superpowers set like the hero's four words,
+   then who the translation is for. */
+.body>div>.ways{margin-top:.7rem}
+.ways{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem clamp(1rem,2.4vw,2rem);max-width:none}
+.ways li{border-top:1px solid var(--line-2);padding-top:.6rem;font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,2vw,1.65rem);line-height:1.08;letter-spacing:-.015em;color:var(--ink)}
+.body>div>.ways+p{margin-top:clamp(1.6rem,3.5vw,2.2rem)}
+.body>div>.audiences{margin-top:.7rem}
+.audiences{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem clamp(1rem,2.4vw,2rem);max-width:none}
+.audiences li{border-top:1px solid var(--line-2);padding-top:.7rem}
+.audiences b{display:block;font-family:var(--display);font-weight:600;font-size:clamp(1.25rem,2vw,1.6rem);letter-spacing:-.045em;line-height:1;color:var(--ink);font-variation-settings:"opsz" 48}
+.audiences span{display:block;margin-top:.35rem;font-size:14.5px;line-height:1.4;color:var(--ink-2)}
+@media (max-width:900px){.ways,.audiences{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.audiences{grid-template-columns:1fr}}
+/* Skills: one item per line instead of a run-on list */
+.skill-list{list-style:none;display:grid;gap:.32rem;max-width:none}
+.skill-list li{position:relative;padding-left:.85rem;font-size:14px;line-height:1.35;color:var(--ink-2)}
+.skill-list li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:1px;background:var(--ink-3)}
 /* About illustrations: each animation acts out the section's idea. */
 .about-icon .icon-line{fill:none;stroke:var(--ink);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
 .about-icon .icon-hair{fill:none;stroke:var(--line-2);stroke-width:1}
@@ -449,40 +589,40 @@ html,body{overflow-x:clip}
 .about-icon .icon-dot.accent{fill:var(--accent)}
 .about-icon .motion{animation-play-state:paused!important}
 .play .about-icon .motion{animation-play-state:running!important}
-.pattern-dot{transform-box:fill-box;animation:pattern-gather 5.6s var(--ease) calc(var(--i,0)*90ms) infinite}
+.pattern-dot{transform-box:fill-box;animation:pattern-gather calc(5.6s*var(--slow)) var(--ease) calc(var(--i,0)*90ms*var(--slow)) infinite}
 @keyframes pattern-gather{
   0%,12%,100%{transform:translate(var(--dx,0),var(--dy,0));opacity:.3}
   42%,78%{transform:none;opacity:1}
 }
-.people-piece{transform-box:view-box;animation:people-gather 6.2s var(--ease) calc(var(--i,0)*120ms) infinite}
+.people-piece{transform-box:view-box;animation:people-gather calc(6.2s*var(--slow)) var(--ease) calc(var(--i,0)*120ms*var(--slow)) infinite}
 @keyframes people-gather{
   0%,12%,100%{transform:translate(var(--dx,0),var(--dy,0));opacity:.35}
   40%,80%{transform:none;opacity:1}
 }
-.dino-head{transform-box:view-box;transform-origin:39px 32px;animation:dino-nod 5.2s ease-in-out infinite}
+.dino-head{transform-box:view-box;transform-origin:39px 32px;animation:dino-nod calc(5.2s*var(--slow)) ease-in-out infinite}
 @keyframes dino-nod{0%,18%,72%,100%{transform:rotate(0)}32%{transform:rotate(10deg)}44%{transform:rotate(-4deg)}56%{transform:rotate(3deg)}}
-.toolbox-lid{transform-box:view-box;transform-origin:14px 25px;animation:toolbox-open 5.8s var(--ease) infinite}
+.toolbox-lid{transform-box:view-box;transform-origin:14px 25px;animation:toolbox-open calc(5.8s*var(--slow)) var(--ease) infinite}
 @keyframes toolbox-open{
   0%,12%,100%{transform:translateY(4px) rotate(0);opacity:.55}
   28%,78%{transform:translateY(-7px) rotate(-13deg);opacity:1}
 }
-.tool-dot{transform-box:fill-box;animation:tool-drop 5.8s var(--ease) calc(820ms + var(--i,0)*360ms) infinite}
+.tool-dot{transform-box:fill-box;animation:tool-drop calc(5.8s*var(--slow)) var(--ease) calc((820ms + var(--i,0)*360ms)*var(--slow)) infinite}
 @keyframes tool-drop{
   0%,18%{transform:translateY(-22px);opacity:0}
   28%{opacity:1}
   48%,78%{transform:none;opacity:1}
   100%{transform:none;opacity:0}
 }
-.transform-dot{transform-box:view-box;animation:transform-travel 5.8s var(--ease) infinite}
+.transform-dot{transform-box:view-box;animation:transform-travel calc(5.8s*var(--slow)) var(--ease) infinite}
 @keyframes transform-travel{
   0%,12%{transform:translateX(0);opacity:.35}
   52%,78%{transform:translateX(35px);opacity:1}
   100%{transform:translateX(35px);opacity:.35}
 }
-.transform-loop{transform-box:fill-box;transform-origin:center;animation:transform-bloom 5.8s var(--ease) infinite}
+.transform-loop{transform-box:fill-box;transform-origin:center;animation:transform-bloom calc(5.8s*var(--slow)) var(--ease) infinite}
 @keyframes transform-bloom{0%,30%{transform:scale(.55);opacity:.25}58%,84%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:.35}}
 /* What I'm looking for: a magnifying glass wanders the field and settles on the orange dot, which lights up when found. */
-.lens{transform-box:view-box;animation:lens-search 7s var(--ease) infinite}
+.lens{transform-box:view-box;animation:lens-search calc(7s*var(--slow)) var(--ease) infinite}
 @keyframes lens-search{
   0%,8%{transform:translate(-20px,-6px)}
   30%{transform:translate(4px,-12px)}
@@ -490,22 +630,31 @@ html,body{overflow-x:clip}
   70%,92%{transform:translate(0,0)}
   100%{transform:translate(-20px,-6px)}
 }
-.found-dot{transform-box:fill-box;transform-origin:center;animation:found 7s var(--ease) infinite}
+.found-dot{transform-box:fill-box;transform-origin:center;animation:found calc(7s*var(--slow)) var(--ease) infinite}
 @keyframes found{0%,66%{transform:scale(.7);opacity:.35}74%,92%{transform:scale(1.25);opacity:1}100%{transform:scale(.7);opacity:.35}}
 /* Learning: pages turn in a small open book; the orange dot is the line being read. */
-.page-turn{transform-box:view-box;transform-origin:32px 30px;animation:page-flip 6.4s var(--ease) infinite}
+.page-turn{transform-box:view-box;transform-origin:32px 30px;animation:page-flip calc(6.4s*var(--slow)) var(--ease) infinite}
 @keyframes page-flip{0%,20%{transform:scaleX(1)}45%,55%{transform:scaleX(-1)}80%,100%{transform:scaleX(1)}}
-.read-dot{transform-box:view-box;animation:read-line 6.4s linear infinite}
+.read-dot{transform-box:view-box;animation:read-line calc(6.4s*var(--slow)) linear infinite}
 @keyframes read-line{0%{transform:translate(0,0);opacity:0}8%{opacity:1}30%{transform:translate(14px,0)}34%{transform:translate(0,6px)}60%{transform:translate(14px,6px)}64%{transform:translate(0,12px)}88%{transform:translate(14px,12px);opacity:1}100%{transform:translate(14px,12px);opacity:0}}
 .vocab{margin-top:1.4rem;border-top:1px solid var(--line);padding-top:1rem}
 .vocab dl{display:grid;gap:.5rem;margin-top:.6rem}
 .vocab dl div{display:grid;grid-template-columns:12.5rem 1fr;gap:1rem;font-size:13.5px;line-height:1.45;color:var(--ink-2)}
 .vocab dt{color:var(--ink);font-weight:500}
 @media (max-width:640px){.vocab dl div{grid-template-columns:1fr;gap:.1rem}}
+/* A case's workflows, one row each: the name, then the question it answers and what you get */
+.plugin-list{display:grid;border-top:1px solid var(--line);max-width:none}
+.plugin-list div{display:grid;grid-template-columns:12rem minmax(0,1fr);column-gap:1.2rem;padding:.75rem 0 .8rem;border-bottom:1px solid var(--line)}
+.plugin-list dt{font-weight:500;font-size:15px;letter-spacing:-.02em;line-height:1.3;color:var(--ink)}
+.plugin-list dt .mark{display:table;margin:.35rem 0 0}
+.plugin-list dd{font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.plugin-list dd b{font-weight:500;color:var(--ink)}
+@media (max-width:640px){.plugin-list div{grid-template-columns:1fr;row-gap:.2rem}}
 
 /* The skill levels are a deliberately equal comparison, not content-sized columns. */
 #skills table{table-layout:fixed}
 #skills th,#skills td{width:33.333%;font-family:var(--sans)}
+#skills th span{display:block;margin-top:.15rem;font-weight:400;font-size:12.5px;letter-spacing:-.01em;color:var(--ink-2)}
 #skills td:first-child{color:var(--ink-2)} /* same visual weight across the three columns */
 
 /* ---------- reveal ---------- */
@@ -514,7 +663,7 @@ html,body{overflow-x:clip}
 .no-js .rv{opacity:1;transform:none}
 
 /* ---------- diagrams (inline SVG) ---------- */
-.diagram{margin:1.6rem 0;border:1px solid var(--line);background:rgba(255,255,255,.45);padding:clamp(.8rem,2vw,1.4rem)}
+.diagram{margin:1.6rem 0;border:1px solid var(--line);background:#f7f7f7;padding:clamp(.8rem,2vw,1.4rem)}
 .diagram svg{width:100%;height:auto}
 /* the full-width loop chains stay legible on phones by scrolling sideways instead of shrinking */
 @media (max-width:640px){.diagram.wide{overflow-x:auto;-webkit-overflow-scrolling:touch}.diagram.wide svg{min-width:680px}.diagram.wide figcaption{position:sticky;left:0}}
@@ -547,7 +696,7 @@ html,body{overflow-x:clip}
 .trail{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linecap:round;pointer-events:none}
 .diagram .trail,.tile .trail{stroke-width:1.2}
 .trail.t1{opacity:.16}.trail.t2{opacity:.32}.trail.t3{opacity:.7}
-.loop-spin{transform-box:fill-box;transform-origin:center;animation:spin 48s linear infinite;animation-play-state:paused}
+.loop-spin{transform-box:fill-box;transform-origin:center;animation:spin calc(48s*var(--slow)) linear infinite;animation-play-state:paused}
 .play .loop-spin{animation-play-state:running}
 .sec-head.has-fig{display:flex;align-items:center;justify-content:space-between;gap:2rem}
 .spin-fig{flex:none;width:clamp(110px,14vw,170px);margin:0}
@@ -575,40 +724,42 @@ html,body{overflow-x:clip}
 .dvf svg{width:100%;height:auto;overflow:visible}
 
 /* ---------- sketch: hand-drawn strokes (filter #sketch is injected by site.js), strokes draw themselves in on reveal. html.sketch is on by default; ?sketch=0 turns it off ---------- */
-.sketch .dg-line,.sketch .dg-hair,.sketch .dg-dash,.sketch .dg-box,.sketch .dg-arrow,.sketch .dg-gate-soft,.sketch .tile .dg-dot{filter:url(#sketch)}
-.sketch .tile .art{background:rgba(255,255,255,.38)}
-.sketch .tile:hover .art{background:rgba(255,255,255,.6)}
-.sketch .diagram{background:rgba(255,255,255,.3);border-color:var(--line-2)}
-.sketch svg.draw .dg-line,.sketch svg.draw .dg-line path,.sketch svg.draw .dg-box,.sketch svg.draw .dg-box rect,.sketch svg.draw .dg-arrow{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s var(--ease)}
+/* site.js gives each diagram its own filter and points --sketch at it; without the script there is no wobble */
+.sketch .dg-line,.sketch .dg-hair,.sketch .dg-dash,.sketch .dg-box,.sketch .dg-arrow,.sketch .dg-gate-soft,.sketch .tile .dg-dot{filter:var(--sketch)}
+.sketch.crisp .dg-line,.sketch.crisp .dg-hair,.sketch.crisp .dg-dash,.sketch.crisp .dg-box,.sketch.crisp .dg-arrow,.sketch.crisp .dg-gate-soft,.sketch.crisp .tile .dg-dot{filter:none}
+.sketch .tile .art{background:#f6f6f6}
+.sketch .tile:hover .art{background:#f9f9f9}
+.sketch .diagram{background:#f5f5f5;border-color:var(--line-2)}
+.sketch svg.draw .dg-line,.sketch svg.draw .dg-line path,.sketch svg.draw .dg-box,.sketch svg.draw .dg-box rect,.sketch svg.draw .dg-arrow{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset calc(1.6s*var(--slow)) var(--ease)}
 .sketch .in svg.draw .dg-line,.sketch .in svg.draw .dg-line path,.sketch .in svg.draw .dg-box,.sketch .in svg.draw .dg-box rect,.sketch .in svg.draw .dg-arrow{stroke-dashoffset:0}
-.sketch svg.draw .dg-box{transition-delay:.2s}
-.sketch svg.draw .dg-arrow{transition-delay:.6s}
+.sketch svg.draw .dg-box{transition-delay:calc(.2s*var(--slow))}
+.sketch svg.draw .dg-arrow{transition-delay:calc(.6s*var(--slow))}
 
 /* ---------- orange elements move while in view ([data-anim] gets .play from site.js) ---------- */
 .a{transform-box:fill-box;transform-origin:center;animation-play-state:paused!important}
 .play .a{animation-play-state:running!important}
 .no-js .a{animation:none!important}
-.a-pp{animation:pp 2.8s var(--ease) calc(var(--i,0)*.22s) infinite alternate}
+.a-pp{animation:pp calc(2.8s*var(--slow)) var(--ease) calc(var(--i,0)*.22s*var(--slow)) infinite alternate}
 @keyframes pp{to{transform:translateX(var(--dx,46px))}}
-.a-bob{animation:bob 3.4s ease-in-out infinite alternate}
+.a-bob{animation:bob calc(3.4s*var(--slow)) ease-in-out infinite alternate}
 @keyframes bob{from{transform:translateY(calc(var(--dy,34px)*-1))}to{transform:translateY(var(--dy,34px))}}
-.a-flag{animation:flag 4.2s var(--ease) calc(var(--i,0)*.7s) infinite}
+.a-flag{animation:flag calc(4.2s*var(--slow)) var(--ease) calc(var(--i,0)*.7s*var(--slow)) infinite}
 @keyframes flag{0%{transform:translateX(34px);opacity:0}22%{transform:none;opacity:1}78%{transform:none;opacity:1}100%{transform:translateX(-10px);opacity:0}}
-.a-fill{transform-origin:left center;animation:fill 5s var(--ease) calc(var(--i,0)*.35s) infinite}
+.a-fill{transform-origin:left center;animation:fill calc(5s*var(--slow)) var(--ease) calc(var(--i,0)*.35s*var(--slow)) infinite}
 @keyframes fill{0%{transform:scaleX(0)}38%{transform:scaleX(1)}84%{transform:scaleX(1)}100%{transform:scaleX(0)}}
-.a-seq{animation:seq 6s ease-in-out calc(var(--i,0)*.3s) infinite}
+.a-seq{animation:seq calc(6s*var(--slow)) ease-in-out calc(var(--i,0)*.3s*var(--slow)) infinite}
 @keyframes seq{0%{opacity:0}18%{opacity:1}80%{opacity:1}100%{opacity:0}}
 /* Tile 02: each orange square is one request. They start scattered through the grid and slowly sort themselves into the "data and platform" group. 14s per pass; nothing moves fast. */
-.a-sort{transform-box:view-box;animation:sort-into-place 14s cubic-bezier(.45,0,.2,1) calc(var(--i,0)*70ms) infinite}
+.a-sort{transform-box:view-box;animation:sort-into-place calc(14s*var(--slow)) cubic-bezier(.45,0,.2,1) calc(var(--i,0)*70ms*var(--slow)) infinite}
 @keyframes sort-into-place{
   0%,16%{transform:translate(var(--sx,0),var(--sy,0));opacity:.45}
   58%,86%{transform:none;opacity:1}
   96%{transform:none;opacity:0}
   100%{transform:translate(var(--sx,0),var(--sy,0));opacity:0}
 }
-.a-travel{offset-path:var(--path);offset-rotate:0deg;animation:travel var(--dur,6.5s) ease-in-out infinite alternate}
+.a-travel{offset-path:var(--path);offset-rotate:0deg;animation:travel calc(var(--dur,6.5s)*var(--slow)) ease-in-out infinite alternate}
 @keyframes travel{from{offset-distance:var(--from,0%)}to{offset-distance:var(--to,100%)}}
-.a-travel-hold{offset-path:var(--path);offset-rotate:0deg;animation:travel-hold var(--dur,6s) ease-in-out infinite}
+.a-travel-hold{offset-path:var(--path);offset-rotate:0deg;animation:travel-hold calc(var(--dur,6s)*var(--slow)) ease-in-out infinite}
 @keyframes travel-hold{0%{offset-distance:0%;opacity:0}8%{opacity:1}62%{offset-distance:100%;opacity:1}90%{offset-distance:100%;opacity:1}100%{offset-distance:100%;opacity:0}}
 
 /* ---------- reduced motion ---------- */

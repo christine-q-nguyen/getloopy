@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<title>Paper texture source</title>
+<!-- The crease texture the site used to draw with SVG filters on every page load. Screenshot #paper at exactly 1100×1100 (CSS pixels)
+     and run `python3 tools/paper.py <screenshot.png>` to write assets/img/paper.webp. -->
+<style>
+  html, body { margin: 0; background: #fff; }
+  #paper { width: 1100px; height: 1100px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1100' height='1100'><filter id='c' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.0105' numOctaves='5' seed='9' stitchTiles='stitch'/><feDiffuseLighting lighting-color='%23fff' surfaceScale='3.6'><feDistantLight azimuth='235' elevation='68'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='1.08'/><feFuncG type='linear' slope='1.08'/><feFuncB type='linear' slope='1.08'/></feComponentTransfer></filter><rect width='1100' height='1100' filter='url(%23c)'/></svg>");
+    background-size: 1100px 1100px; }
+</style>
+</head>
+<body><div id="paper"></div></body>
+</html>

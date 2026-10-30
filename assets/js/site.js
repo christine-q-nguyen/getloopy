@@ -1,18 +1,20 @@
 /* christine.nguyen — site.js
-   No dependencies. Nine jobs:
+   No dependencies. Eight jobs:
    1. reveal-on-scroll for .rv elements (IntersectionObserver; everything shows immediately without JS or under reduced motion)
    2. copy-to-clipboard on [data-copy-email] (progressive: falls through to mailto: when the Clipboard API is missing)
    3. mark the current page in the nav (aria-current) when the HTML didn't already
    4. sketch layer: honour ?sketch=0, inject the #sketch filter, let diagram strokes draw themselves in on reveal
    5. trace: the orange dot travels every svg[data-trace] loop and leaves a trace that fades back to hairline
-   6. runners: one orange dot on each outer grid line (the two middle lines stay quiet)
+   6. runners: one orange dot on each outer grid line (the two middle lines stay quiet); they pass behind text the way the lines do (CSS)
    7. play: [data-anim] elements animate only while they are in view
    8. draw: a [data-draw] portrait draws its lines in once, with a brief line boil, then the shading settles over them
-   Everything in 4–8 is decoration: it is skipped under prefers-reduced-motion and absent without JS. */
+   Everything in 4–8 is decoration: it is skipped under prefers-reduced-motion and absent without JS, and its timing is
+   scaled by the --slow dial in styles.css. */
 (function () {
   var d = document, html = d.documentElement;
   html.classList.remove("no-js");
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SLOW = parseFloat(getComputedStyle(html).getPropertyValue("--slow")) || 1;
   var hasIO = "IntersectionObserver" in window;
   var each = function (list, fn) { Array.prototype.forEach.call(list, fn); };
 
@@ -55,12 +57,26 @@
   var params = new URLSearchParams(location.search);
   if (params.get("sketch") === "0") html.classList.remove("sketch");
   if (html.classList.contains("sketch")) {
-    d.body.insertAdjacentHTML("afterbegin",
-      '<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs>' +
-      '<filter id="sketch" filterUnits="userSpaceOnUse" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">' +
-      '<feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>' +
-      '</filter></defs></svg>');
+    var paper = function () { html.classList.add("paper"); };
+    if (d.readyState === "complete") paper(); else window.addEventListener("load", paper, { once: true });
+    // WebKit (Safari, and every browser on iOS) re-runs SVG filters on every repaint: the stroke wobble took most of each
+    // scroll frame there, so WebKit draws the strokes crisp and keeps the rest of the sketch layer.
+    var ua = navigator.userAgent;
+    if ((/AppleWebKit\//.test(ua) && !/(Chrome|Chromium|Edg|OPR)\//.test(ua)) || /(CriOS|FxiOS|EdgiOS)\//.test(ua)) html.classList.add("crisp");
+    // One wobble filter per diagram, its area in fixed units (-10% to 110% of the diagram). A single filter sized in
+    // percentages drew nothing in Chromium 148 (Electron, so Cursor's browser): it measured them against this hidden 0×0 svg.
+    var prims = '<feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="n"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>';
+    var defs = "", nf = 0;
+    each(d.querySelectorAll("svg[viewBox]"), function (svg) {
+      if (!svg.querySelector(".dg-line, .dg-hair, .dg-dash, .dg-box, .dg-arrow, .dg-gate-soft, .dg-dot")) return;
+      var vb = svg.viewBox.baseVal, id = "sketch-" + (++nf);
+      if (!vb || !vb.width) return;
+      defs += '<filter id="' + id + '" filterUnits="userSpaceOnUse" x="' + -0.1 * vb.width + '" y="' + -0.1 * vb.height +
+        '" width="' + 1.2 * vb.width + '" height="' + 1.2 * vb.height + '" color-interpolation-filters="sRGB">' + prims + '</filter>';
+      svg.style.setProperty("--sketch", "url(#" + id + ")");
+    });
+    d.body.insertAdjacentHTML("afterbegin", '<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs>' + defs + '</defs></svg>');
     if (hasIO && !reduce) {
       each(d.querySelectorAll(".diagram svg, .tile .art > svg"), function (svg) {
         each(svg.querySelectorAll(".dg-line, .dg-line path, .dg-box, .dg-box rect, .dg-arrow"), function (el) {
@@ -76,7 +92,9 @@
     var base = svg.querySelector(".loop-base"), dot = svg.querySelector(".trace-dot");
     if (!base || !base.getTotalLength) return;
     var L = base.getTotalLength();
-    var dur = (parseFloat(svg.getAttribute("data-trace")) || 14) * 1000;
+    var dur = (parseFloat(svg.getAttribute("data-trace")) || 14) * 1000 * SLOW;
+    // points every 2 units, measured the first time the dot reaches them: after one lap a frame only looks a point up
+    var N = Math.max(2, Math.ceil(L / 2)), pts = new Float32Array(N * 2), have = new Uint8Array(N);
     var after = dot && dot.parentNode === base.parentNode ? dot : base.nextSibling;
     var trails = [0.32, 0.18, 0.07].map(function (f, i) {
       var p = base.cloneNode(false);
@@ -86,16 +104,17 @@
       base.parentNode.insertBefore(p, after);
       return { el: p, T: f * L };
     });
-    var phase = parseFloat(svg.getAttribute("data-trace-phase")) || 0;
+    var phase = (parseFloat(svg.getAttribute("data-trace-phase")) || 0) * SLOW;
     var t0 = null, raf = 0, visible = true;
     function frame(ts) {
       if (t0 === null) t0 = ts - phase;
       var s = (((ts - t0) % dur) / dur) * L;
       for (var i = 0; i < trails.length; i++) trails[i].el.style.strokeDashoffset = trails[i].T - s;
       if (dot) {
-        var pt = base.getPointAtLength(s);
-        dot.setAttribute("cx", pt.x.toFixed(2));
-        dot.setAttribute("cy", pt.y.toFixed(2));
+        var j = Math.min(N - 1, Math.round((s / L) * (N - 1)));
+        if (!have[j]) { var q = base.getPointAtLength((j / (N - 1)) * L); pts[j * 2] = q.x; pts[j * 2 + 1] = q.y; have[j] = 1; }
+        dot.setAttribute("cx", pts[j * 2].toFixed(2));
+        dot.setAttribute("cy", pts[j * 2 + 1].toFixed(2));
       }
       raf = visible ? requestAnimationFrame(frame) : 0;
     }
@@ -116,33 +135,10 @@
       var b = d.createElement("b");
       b.className = "run" + (r[3] ? " up" : "");
       b.setAttribute("data-line", r[0]);
-      b.style.setProperty("--dur", r[1] + "s");
-      b.style.setProperty("--delay", r[2] + "s");
+      b.style.setProperty("--dur", r[1] * SLOW + "s");
+      b.style.setProperty("--delay", r[2] * SLOW + "s");
       grid.appendChild(b);
     });
-  }
-
-  // 6b. runners fade while they cross text, so the motion never fights legibility
-  if (grid && !reduce) {
-    var runs = grid.querySelectorAll(".run");
-    var textSel = "main p, main li, main h1, main h2, main h3, main td, main th, main dt, main dd, main figcaption, main blockquote, main .tag, main .lbl, main .proof";
-    var fadeTick = function () {
-      if (d.hidden) return;
-      var vh = window.innerHeight, boxes = [];
-      each(d.querySelectorAll(textSel), function (el) {
-        var r = el.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < vh && r.width > 0 && el.textContent.trim()) boxes.push(r);
-      });
-      each(runs, function (b) {
-        var r = b.getBoundingClientRect(), hit = false;
-        for (var i = 0; i < boxes.length && !hit; i++) {
-          var t = boxes[i];
-          hit = r.left < t.right && r.right > t.left && r.top < t.bottom && r.bottom > t.top;
-        }
-        b.classList.toggle("fade", hit);
-      });
-    };
-    setInterval(fadeTick, 400);
   }
 
   // 7. play
@@ -155,17 +151,16 @@
       each(anim, function (el) { pio.observe(el); });
     } else each(anim, function (el) { el.classList.add("play"); });
   }
-
   // 8. draw
   each(d.querySelectorAll("[data-draw]"), function (fig) {
     var lines = fig.querySelector(".portrait-lines"), tone = fig.querySelector(".portrait-tone");
     var noise = fig.querySelector("feTurbulence");
     var strokes = Array.prototype.map.call(fig.querySelectorAll("[data-at]"), function (p) {
-      return { el: p, at: parseFloat(p.getAttribute("data-at")), dur: parseFloat(p.getAttribute("data-for")) };
+      return { el: p, at: parseFloat(p.getAttribute("data-at")) * SLOW, dur: parseFloat(p.getAttribute("data-for")) * SLOW };
     });
     if (reduce || !hasIO || !lines || !tone || !strokes.length) return;
     var linesEnd = Math.max.apply(null, strokes.map(function (s) { return s.at + s.dur; }));
-    var toneAt = linesEnd * 0.6, toneFor = 1.8, end = toneAt + toneFor;
+    var toneAt = linesEnd * 0.6, toneFor = 1.8 * SLOW, end = toneAt + toneFor;
     var clamp = function (x) { return x < 0 ? 0 : x > 1 ? 1 : x; };
     var ease = function (x) { return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
     strokes.forEach(function (s) { s.el.setAttribute("stroke-dasharray", "1 1"); s.el.setAttribute("stroke-dashoffset", "1"); });
@@ -183,7 +178,7 @@
         tone.style.opacity = ease(clamp((t - toneAt) / toneFor)).toFixed(3);
         lines.style.opacity = (1 - ease(clamp((t - toneAt - toneFor / 2) / (toneFor / 2)))).toFixed(3);
         if (noise && t < linesEnd) {
-          var b = Math.floor(t / 0.11);
+          var b = Math.floor(t / (0.11 * SLOW));
           if (b !== beat) { beat = b; noise.setAttribute("seed", String(b % 5 + 1)); }
         } else if (lines.hasAttribute("filter")) lines.removeAttribute("filter");
         if (t < end) return requestAnimationFrame(frame);

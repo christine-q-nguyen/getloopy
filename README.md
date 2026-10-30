@@ -46,15 +46,24 @@ research.html         the papers behind the practice (hidden for now, same way)
 assets/css/styles.css the design system
 assets/js/site.js     reveal, copy-to-clipboard, loop traces, grid runners, play-on-view, the portrait drawing itself in
 assets/js/wm-glyphs.js generated Instrument Serif outlines for a watermark trace (not loaded right now)
-assets/img/           SVG glyphs, the portrait layers, and the Open Graph image
+assets/img/           SVG glyphs, the portrait layers, the paper tile, and the Open Graph image
+assets/fonts/         the four typefaces, self-hosted (Latin subsets), with their licence
+assets/files/         the résumé PDF the contact block links to
 tools/set-site-url.py canonical, Open Graph, JSON-LD, sitemap, robots for a given base URL
 tools/portrait.py     lifts a finished pencil portrait off its paper into the two layers About draws in
 tools/og.html         the Open Graph card; screenshot it at 1200×630 to make assets/img/og.png
+tools/paper.html      the paper texture's source; screenshot #paper at 1100×1100 and run tools/paper.py to make assets/img/paper.webp
 ```
+
+## Motion and speed
+
+One dial, `--slow` at the top of `styles.css`, scales every decorative animation (CSS and `site.js`); it's set to 2, half the original speed. Hover feedback and scroll reveals keep their own speed, and the first screen of every page paints without waiting for the script. The four hero drawings share one loop and take turns, and like everything marked `data-anim` they only move while on screen. The grid lines fade behind text and art through a soft patch of page colour (CSS only). Safari and every iOS browser (WebKit) draw the diagram strokes crisp, because WebKit re-runs the SVG wobble filter on every repaint; Chrome, Edge, and Firefox keep the wobble.
 
 ## Type
 
-Bricolage Grotesque, Inter, Instrument Serif, and Gochi Hand, loaded from Google Fonts under the SIL Open Font License.
+Bricolage Grotesque, Inter, Instrument Serif, and Gochi Hand: the Latin subsets Google Fonts serves, self-hosted in `assets/fonts/` under the SIL Open Font License (`assets/fonts/OFL.txt`). The site makes no third-party requests.
+
+The big type is tracked tight, which pinches periods against their letters and squeezes decimal points ("2.5" can read as "25"). After editing a headline, a case or tile headline, a result stat, or the section question, run `python3 tools/headline-periods.py`: it wraps periods in `<span class="pd">` and decimal points in `<span class="dp">` so the CSS can give them room (safe to re-run).
 
 ## License
 
