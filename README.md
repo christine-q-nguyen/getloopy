@@ -47,7 +47,7 @@ assets/css/styles.css the design system
 assets/js/site.js     reveal, copy-to-clipboard, loop traces, grid runners, play-on-view, the portrait drawing itself in
 assets/js/wm-glyphs.js generated Instrument Serif outlines for a watermark trace (not loaded right now)
 assets/img/           SVG glyphs, the portrait layers, the paper tile, and the Open Graph image
-assets/fonts/         the four typefaces, self-hosted (Latin subsets), with their licence
+assets/fonts/         the four typefaces, self-hosted (Latin subsets), with their license
 assets/files/         the résumé PDF the contact block links to
 tools/set-site-url.py canonical, Open Graph, JSON-LD, sitemap, robots for a given base URL
 tools/portrait.py     lifts a finished pencil portrait off its paper into the two layers About draws in
@@ -57,7 +57,7 @@ tools/paper.html      the paper texture's source; screenshot #paper at 1100×110
 
 ## Motion and speed
 
-One dial, `--slow` at the top of `styles.css`, scales every decorative animation (CSS and `site.js`); it's set to 2, half the original speed. Hover feedback and scroll reveals keep their own speed, and the first screen of every page paints without waiting for the script. The four hero drawings share one loop and take turns, and like everything marked `data-anim` they only move while on screen. The grid lines fade behind text and art through a soft patch of page colour (CSS only). Safari and every iOS browser (WebKit) draw the diagram strokes crisp, because WebKit re-runs the SVG wobble filter on every repaint; Chrome, Edge, and Firefox keep the wobble.
+One dial, `--slow` at the top of `styles.css`, scales every decorative animation (CSS and `site.js`); it's set to 2, half the original speed. Hover feedback and scroll reveals keep their own speed, and the first screen of every page paints without waiting for the script. The four hero drawings share one loop and take turns, and like everything marked `data-anim` they only move while on screen. The grid lines fade behind text and art through a soft patch of page color (CSS only). Safari and every iOS browser (WebKit) draw the diagram strokes crisp, because WebKit re-runs the SVG wobble filter on every repaint; Chrome, Edge, and Firefox keep the wobble.
 
 ## Type
 

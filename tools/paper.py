@@ -2,7 +2,7 @@
 """Turn a screenshot of tools/paper.html into assets/img/paper.webp, the crease texture laid over every page.
 
 The site used to multiply that texture over the page at 36% from SVG filters, which the browser had to rasterize
-at load (slow on phones). Multiplying by a grey value L at opacity a is the same as laying black over the page at
+at load (slow on phones). Multiplying by a gray value L at opacity a is the same as laying black over the page at
 alpha a * (1 - L), so the texture ships as black with that alpha and blends normally: same look, no filter, no
 blend mode.
 

@@ -1,14 +1,15 @@
 /* christine.nguyen — site.js
-   No dependencies. Eight jobs:
+   No dependencies. Nine jobs:
    1. reveal-on-scroll for .rv elements (IntersectionObserver; everything shows immediately without JS or under reduced motion)
    2. copy-to-clipboard on [data-copy-email] (progressive: falls through to mailto: when the Clipboard API is missing)
    3. mark the current page in the nav (aria-current) when the HTML didn't already
-   4. sketch layer: honour ?sketch=0, inject the #sketch filter, let diagram strokes draw themselves in on reveal
+   4. sketch layer: honor ?sketch=0, inject the #sketch filter, let diagram strokes draw themselves in on reveal
    5. trace: the orange dot travels every svg[data-trace] loop and leaves a trace that fades back to hairline
    6. runners: one orange dot on each outer grid line (the two middle lines stay quiet); they pass behind text the way the lines do (CSS)
    7. play: [data-anim] elements animate only while they are in view
    8. draw: a [data-draw] portrait draws its lines in once, with a brief line boil, then the shading settles over them
-   Everything in 4–8 is decoration: it is skipped under prefers-reduced-motion and absent without JS, and its timing is
+   9. count: a [data-count] number follows the fill it labels, so it counts up as the bucket fills
+   Everything in 4–9 is decoration: it is skipped under prefers-reduced-motion and absent without JS, and its timing is
    scaled by the --slow dial in styles.css. */
 (function () {
   var d = document, html = d.documentElement;
@@ -150,6 +151,22 @@
       }, { threshold: 0.15 });
       each(anim, function (el) { pio.observe(el); });
     } else each(anim, function (el) { el.classList.add("play"); });
+  }
+  // 9. count: the number reads its fill's current height (scaleY) while the drawing plays; otherwise it keeps its final value
+  var counts = Array.prototype.map.call(d.querySelectorAll("[data-count]"), function (t) {
+    return { el: t, to: parseInt(t.getAttribute("data-count"), 10), fill: d.getElementById(t.getAttribute("data-count-fill")), host: t.closest("[data-anim]"), shown: null };
+  }).filter(function (c) { return c.fill && c.host; });
+  if (counts.length && !reduce) {
+    var count = function () {
+      counts.forEach(function (c) {
+        if (!c.host.classList.contains("play")) return;
+        var m = /matrix\(([^)]+)\)/.exec(getComputedStyle(c.fill).transform), k = m ? parseFloat(m[1].split(",")[3]) : 1;
+        var n = Math.round(c.to * Math.max(0, Math.min(1, k)));
+        if (n !== c.shown) { c.el.textContent = n; c.shown = n; }
+      });
+      requestAnimationFrame(count);
+    };
+    requestAnimationFrame(count);
   }
   // 8. draw
   each(d.querySelectorAll("[data-draw]"), function (fig) {

@@ -7,20 +7,20 @@
 <link rel="preload" href="../assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../assets/fonts/instrument-serif-italic-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../assets/css/styles.css?v=20261029p">
-<meta name="description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<link rel="stylesheet" href="../assets/css/styles.css?v=20261030d">
+<meta name="description" content="A safe path for teams to train their own model, written so any practice can adopt it, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
 <!-- seo:start (managed by tools/set-site-url.py) -->
 <link rel="canonical" href="https://christinenguyen.me/work/case-training.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="christine.nguyen">
 <meta property="og:title" content="A safe way to train your own model — Christine Nguyen">
-<meta property="og:description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<meta property="og:description" content="A safe path for teams to train their own model, written so any practice can adopt it, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
 <meta property="og:url" content="https://christinenguyen.me/work/case-training.html">
 <meta property="og:image" content="https://christinenguyen.me/assets/img/og.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A safe way to train your own model — Christine Nguyen">
-<meta name="twitter:description" content="A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
+<meta name="twitter:description" content="A safe path for teams to train their own model, written so any practice can adopt it, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.">
 <meta name="twitter:image" content="https://christinenguyen.me/assets/img/og.png">
 <script type="application/ld+json">{
 "@context": "https://schema.org",
@@ -80,7 +80,7 @@
 "@id": "https://christinenguyen.me/work/case-training.html",
 "url": "https://christinenguyen.me/work/case-training.html",
 "name": "A safe way to train your own model — Christine Nguyen",
-"description": "A safe, approved way for teams to train their own model, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.",
+"description": "A safe path for teams to train their own model, written so any practice can adopt it, and routing that sends only the uncertain rows to an LLM: about three quarters fewer calls by design, a score anyone can check, and tokens spent only where they help.",
 "isPartOf": {
 "@type": "WebSite",
 "@id": "https://christinenguyen.me/#site",
@@ -118,7 +118,7 @@
   <h1>When prompting stops working, teams need a safe path to <em class="ac">train their own model.</em></h1>
   <p class="lede">Once prompting hit its limit, the question became how to make training our own model a safe, normal thing to do instead of a one-off exception. I wrote the rules for it and designed routing that saves the expensive LLM, and people's time, for the rows that need them.</p>
   <p class="out"><b>70–85%</b><span>fewer LLM calls on classification, by design</span></p>
-  <div class="meta"><div><b>My role</b>Product lead; wrote the rules for training a model</div><div><b>When</b>2026</div><div><b>Domain</b>classification</div><div><b>Status</b>In place, with a written risk sign-off</div></div>
+  <div class="meta"><div><b>My role</b>Product lead; wrote the rules for training a model</div><div><b>When</b>2026</div><div><b>Domain</b>classification</div></div>
 </header>
 
 <main class="wrap" id="main">
@@ -128,11 +128,11 @@
   </div></div>
 
   <div class="body rv"><aside>My role</aside><div>
-    <p>I was the product lead. I wrote the rules for training a model here: which teams can do it, with whose data, on which approved infrastructure, and who signs off on the risk before anything runs. I designed the routing: our trained model takes the rows it's sure about, the LLM gets the ones it isn't, and a person sees anything still below the bar. I worked through the data-rights questions with legal and kept each client's data separate. The engineers built and trained the models.</p>
+    <p>I was the product lead. I wrote the rules for training a model here: which teams can do it, with whose data, on which approved infrastructure, and who signs off on the risk before anything runs. I designed the routing: our trained model takes the rows it's sure about, the LLM gets the ones it isn't, and a person sees anything still below the bar. I worked through the data-rights questions with legal and wrote in that each client's data stays separate. The engineers built and trained the models.</p>
   </div></div>
 
   <div class="body rv"><aside>The decision</aside><div>
-    <p><strong>Make the safe way the easy way.</strong> Teams kept asking for one-off exceptions to train a model. Instead, I set up one path anyone could follow: approved infrastructure, a risk sign-off written once, each client's data kept separate, and an honest "not sure" instead of a made-up answer when the model isn't confident.</p>
+    <p><strong>Make the safe way the easy way.</strong> Teams kept asking for one-off exceptions to train a model. Instead, I designed one path anyone could follow: approved infrastructure, a risk sign-off written once, each client's data kept separate, and an honest "not sure" instead of a made-up answer when the model isn't confident.</p>
     <p>It's a cost decision too. Every row our own model handles is a row we don't pay an LLM for.</p>
   </div></div>
 
@@ -160,22 +160,22 @@
       </svg>
       <figcaption>Every row gets a confidence score. The sure ones stay with our own model, the middle goes to the LLM, and the least certain go to a person.</figcaption>
     </figure>
-    <div class="chips"><b>Built with</b><span>Custom-trained model</span><span>Confidence gating</span><span>Our model first, LLM second</span><span>Approved infrastructure</span><span>Documented risk sign-off</span><span>Per-client isolation</span></div>
+    <div class="chips"><b>Built with</b><span>Custom-trained model</span><span>Confidence gating</span><span>Our model first, LLM second</span><span>Operating model</span><span>Data-rights rules</span></div>
   </div></div>
 
   <div class="body rv"><aside>The result</aside><div>
     <div class="stats">
-      <div class="stat"><div class="v">70–85%</div><div class="l">fewer LLM calls on classification, because our model goes first<span class="how">a design estimate from the share of rows our model can handle; the dollar saving is small at today's volumes, but predictable costs matter</span></div></div><div class="stat"><div class="v">1</div><div class="l">safe, approved way to train a model, where there had been none</div></div>
+      <div class="stat"><div class="v">~40×</div><div class="l">faster per row than asking the LLM: about a third of a second against twelve, in testing</div></div><div class="stat"><div class="v">70–85%</div><div class="l">fewer calls to the expensive LLM by design, because our model handles the clear rows first</div></div><div class="stat"><div class="v">Any analyst</div><div class="l">can train a model without machine-learning experience, in the words of the engineer who built it</div></div>
     </div>
   </div></div>
 
   <div class="body rv"><aside>How I knew it worked</aside><div>
-    <p><strong>It got signed off.</strong> The path has a written risk sign-off and keeps each client's data separate.</p>
+    <p><strong>It holds up on real files.</strong> In testing, our model answered in about a third of a second per row and sorted 99% of a 4,700-row file into the right top category. The rows it wasn't sure about went to the LLM, and then to a person.</p>
     <blockquote>Honestly, the cost savings were a bonus. What mattered was getting the same answer every time, with a score anyone can check.<cite>How I describe it</cite></blockquote>
   </div></div>
 
   <div class="body rv"><aside>Who owns it now</aside><div>
-    <p><strong>The firm has a path where there was none.</strong> Teams that hit the prompting ceiling can train their own model without turning it into a procurement project, and two teams already use the same model.</p>
+    <p><strong>Any practice can pick it up.</strong> The path is written so a team that hits the prompting ceiling can follow it instead of asking for an exception, and two teams already use the same trained model.</p>
   </div></div>
 
   <div class="body rv"><aside>What I learned</aside><div>
@@ -188,6 +188,6 @@
   <div class="next"><a href="../index.html#work">All work</a><a href="case-meta.html">Next: My job search in a box</a></div>
 </main>
 <footer class="band"><span class="ac">christine</span><span class="dot">.</span>nguyen <span class="lg" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 16c-4-8-12-8-14-3s3 9 8 6c5-3 5-12 1-13s-6 4-3 8c3 5 12 5 14 1s-4-6-8-3c-5 3-5 12-1 13s6-4 3-8" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="16" cy="16" r="2.6" fill="#d4501e"/></svg></span> (Austin · a work in progress, 2008 – present)</footer>
-<script src="../assets/js/site.js?v=20261029p" defer></script>
+<script src="../assets/js/site.js?v=20261030d" defer></script>
 </body>
 </html>
